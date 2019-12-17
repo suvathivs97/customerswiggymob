@@ -22,6 +22,12 @@ Header.heading{
   padding: 0 20px;   
 }
 
+.iscurrent{
+  background-color: #e46d47;
+  color: white
+}
+
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

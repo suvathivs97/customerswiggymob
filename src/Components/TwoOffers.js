@@ -47,7 +47,6 @@ export class TwoOffers extends Component {
                               <button style={{width:'auto',height:'36px',backgroundColor:'#e46d47',boxShadow:'0 1px 3px 0 rgba(0,0,0,.12)',color:'white',border:'none',fontSize:'14px',fontWeight:'600'}}>Get Super Now</button>
                           </div>
                         </div>
-                        
                     </div>
                 </div>
             </div>

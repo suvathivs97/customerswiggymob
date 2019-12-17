@@ -5,6 +5,7 @@ import TopOffers from './TopOffers'
 import { Layout, Row, Col, Input, Button } from "antd";
 import TwoOfffers from './TwoOffers'
 import MidContent from './MidContent'
+import AllRestaurants from './AllRestaurants'
 const { Header,Footer,Content } = Layout;
 
 export class MainPage extends Component {
@@ -25,7 +26,9 @@ export class MainPage extends Component {
                             <Row>
                              <MidContent />
                             </Row>
-                            
+                            <Row>
+                              <AllRestaurants />
+                            </Row>
                         </Content>
                         <Footer>
                           <Bottom />
