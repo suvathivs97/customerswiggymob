@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import {Card} from 'antd'
+import {Card, Layout} from 'antd'
 import Scrollspy from 'react-scrollspy'
 import {Row,Col,Icon,Divider} from 'antd'
-
 export class AllRestaurants extends Component {
     state={
         obj:[],tempids:[11,12,13,14]
@@ -77,7 +76,7 @@ export class AllRestaurants extends Component {
                                                 </div>
                                                 <Divider style={{height:'0.2px'}} />
                                                 <div style={{color:'#8a584b',fontSize:'12px',justifyContent:'space-between',display:'flex'}}>
-                                                 <img src="/percentage.png"></img>60 % off | Use coupon Welcome60
+                                                 <img src="/img/percentage.png"></img>60 % off | Use coupon Welcome60
                                                 </div>
                                         </div>
                                     </div>

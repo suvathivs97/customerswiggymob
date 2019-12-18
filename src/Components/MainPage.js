@@ -21,14 +21,14 @@ export class MainPage extends Component {
                               <TopOffers />
                             </Row>
                             <Row>
-                            <TwoOfffers />
+                              <TwoOfffers />
                             </Row>
                             <Row>
                              <MidContent />
                             </Row>
-                            <Row>
+                            {/* <Row>
                               <AllRestaurants />
-                            </Row>
+                            </Row> */}
                         </Content>
                         <Footer>
                           <Bottom />

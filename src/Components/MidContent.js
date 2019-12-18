@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import {Row,Col,Icon,Divider} from 'antd'
 import Scrollspy from 'react-scrollspy'
+import AllRestaurants from './AllRestaurants'
+import { NavLink } from "react-router-dom";
 
 export class MidContent extends Component {
     state={
@@ -51,22 +53,23 @@ export class MidContent extends Component {
         await this.setState({obj})
       }
 
-    //   changecolor=(data)=>{
-    //     //   console.log('inside changecolor function',data)
-    //       for(let i=0;i<this.state.tempids.length;i++){
-    //           if(this.state.tempids[i] == data){
-    //             // console.log(this.state.tempids[i],"this.state.tempids[i]")
-    //             document.getElementById(this.state.tempids[i]).style.color = "white";
-    //             document.getElementById(this.state.tempids[i]).style.backgroundColor = "#e46d47";
-    //           }else{
-    //             document.getElementById(this.state.tempids[i]).style.color = "black";
-    //             document.getElementById(this.state.tempids[i]).style.backgroundColor = "";
-    //           }
-    //       }
-    //   }
+      changecolor=(data)=>{
+        //   console.log('inside changecolor function',data)
+        //   for(let i=0;i<this.state.tempids.length;i++){
+        //       if(this.state.tempids[i] == data){
+        //         // console.log(this.state.tempids[i],"this.state.tempids[i]")
+        //         document.getElementById(this.state.tempids[i]).style.color = "white";
+        //         document.getElementById(this.state.tempids[i]).style.backgroundColor = "#e46d47";
+        //       }else{
+        //         document.getElementById(this.state.tempids[i]).style.color = "black";
+        //         document.getElementById(this.state.tempids[i]).style.backgroundColor = "";
+        //       }
+        //   }
+      }
     render() {
         return (
             // <Row>
+            <div>
             <div style={{marginTop:'30px'}}>
                 <div style={{padding:'0 20px'}}>
                     <div style={{position:'relative',maxWidth:'1200px',minWidth:'1200px',margin:'0 auto'}}> 
@@ -79,7 +82,7 @@ export class MidContent extends Component {
                                         <Scrollspy items={ ['filter_11', 'filter_12', 'filter_13','filter_14'] } currentClassName="iscurrent" style={{marginLeft:'-40px'}}>
                                             <div>
                                                 {/* <a href="#filter_11" onClick={e=>this.changecolor(11)}> */}
-                                                <a href="#filter_11" id="11">
+                                                <a href="#filter_11" id="11" style={{textDecoration:'none'}}>
                                                     <div style={{backgroundColor:'',color:'black'}} >
                                                     {/* <div style={id="#filter_11"?{backgroundColor:'#e46d47'}:{backgroundColor:'#e46d47'}}> */}
                                                     <div style={{display:'flex',alignItems:'center',height:'100%',justifyContent:'center',height:'85px',display:'flex',flexDirection:'column',padding:'0 20px'}}>
@@ -89,7 +92,7 @@ export class MidContent extends Component {
                                                 </a>
                                             </div>
                                             <div>
-                                                <a href="#filter_12" >
+                                                <a href="#filter_12" style={{textDecoration:'none'}}>
                                                     <div style={{backgroundColor:'',color:'black'}} >
                                                     <div style={{display:'flex',alignItems:'center',height:'100%',justifyContent:'center',height:'85px',display:'flex',flexDirection:'column',padding:'0 20px'}}>
                                                         Express Delivery
@@ -98,7 +101,7 @@ export class MidContent extends Component {
                                                 </a>
                                             </div>
                                             <div>
-                                                <a href="#filter_13" >
+                                                <a href="#filter_13" style={{textDecoration:'none'}}>
                                                     <div style={{backgroundColor:'',color:'black'}} >
                                                     <div style={{display:'flex',alignItems:'center',height:'100%',justifyContent:'center',height:'85px',display:'flex',flexDirection:'column',padding:'0 20px'}}>
                                                         Only on Swiggy
@@ -107,7 +110,7 @@ export class MidContent extends Component {
                                                 </a>
                                             </div>
                                             <div>
-                                                <a href="#filter_14" >
+                                                <a href="#filter_14" style={{textDecoration:'none'}}>
                                                     <div style={{backgroundColor:'',color:'black'}}>
                                                     <div style={{display:'flex',alignItems:'center',height:'100%',justifyContent:'center',height:'85px',display:'flex',flexDirection:'column',padding:'0 20px'}}>
                                                         Vegetarian Options
@@ -118,7 +121,7 @@ export class MidContent extends Component {
                                             </Scrollspy>
                                         </div>
                                     </div>
-                                    <a>
+                                    <a href="#filter_15" style={{textDecoration:'none'}}>
                                         <div style={{backgroundColor:'',color:'black'}}>
                                             <div style={{display:'flex',alignItems:'center',height:'100%',justifyContent:'center',height:'85px',display:'flex',flexDirection:'column',padding:'0 20px'}}>
                                                  SEE ALL
@@ -134,6 +137,7 @@ export class MidContent extends Component {
                             <div class="row" >
                                 {this.state.obj.map((p,i)=>{return(
                                 <div class="col-6 col-sm-4 col-lg-4" style={{paddingBottom:'30px'}}>
+                                  <NavLink to={"/SingleRestaurant"} style={{textDecoration:'none'}}>
                                    <div class="card" style={{width: '250px'}}>
                                         <img class="card-img-top" src={p.image} />
                                         <div class="card-body">
@@ -156,6 +160,7 @@ export class MidContent extends Component {
                                                 </div>
                                         </div>
                                     </div>
+                                    </NavLink>
                                 </div>
                                 )})}
                                 </div>
@@ -184,7 +189,7 @@ export class MidContent extends Component {
                                                 </div>
                                                 <Divider style={{height:'0.2px'}} />
                                                 <div style={{color:'#8a584b',fontSize:'12px',justifyContent:'space-between',display:'flex'}}>
-                                                 <img src="/percentage.png"></img>60 % off | Use coupon Welcome60
+                                                 <img src="/img/percentage.png"></img>60 % off | Use coupon Welcome60
                                                 </div>
                                         </div>
                                     </div>
@@ -264,17 +269,12 @@ export class MidContent extends Component {
                         </div>
                     </div>
                 </div>
-                {/* <Row>
-                  <Col span={3}>
-                      fgdfg
-                  </Col>
-                  <Col span={7}>
-                      dfgdf
-                  </Col>
-                </Row> */}
 
             </div>
-            // </Row>
+            <div id="filter_15">
+               <AllRestaurants />
+            </div>
+            </div>
 
         )
     }

@@ -27,6 +27,13 @@ Header.heading{
   color: white
 }
 
+.currentres{
+  border-right: '2px solid #fc8019';
+  color:'white';
+  background-color: #e46d47;
+
+}
+
 
 
 @media (prefers-reduced-motion: no-preference) {
