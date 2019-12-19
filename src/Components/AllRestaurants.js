@@ -74,7 +74,7 @@ export class AllRestaurants extends Component {
                                                     {/* <div >|</div> */}
                                                     <div >₹ 200 for Two</div>
                                                 </div>
-                                                <Divider style={{height:'0.2px'}} />
+                                                <hr style={{height:'1px'}} />
                                                 <div style={{color:'#8a584b',fontSize:'12px',justifyContent:'space-between',display:'flex'}}>
                                                  <img src="/img/percentage.png"></img>60 % off | Use coupon Welcome60
                                                 </div>

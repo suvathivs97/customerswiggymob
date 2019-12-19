@@ -14,6 +14,7 @@ import {
     Dropdown,
     Select
   } from "antd";
+  import {Link} from 'react-router-dom'
   const { Header } = Layout;
 
 export class Head extends Component {
@@ -37,7 +38,7 @@ export class Head extends Component {
                         <ul style={{flex:'1',display:'flex',flexDirection:'row-reverse',alignItems:'center',height:'100%',listStyleType:'none'}}>
                           <li style={style}>
                            <div style={eachitem}>
-                            <a href="" style={combine}>
+                            <a href="/Cartpage" style={combine}>
                                <Icon type="shopping-cart" style={icon}/>
                                <text style={text}>Cart</text>
                             </a>
@@ -120,6 +121,7 @@ const combine={
   display:'flex',
   alignItems:'center',
   paddingLeft:'28px',
+  textDecoration:'none'
 }
 const icon={
   color:'#3d4152',

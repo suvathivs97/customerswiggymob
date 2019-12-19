@@ -88,7 +88,7 @@ export class MidRestaurant extends Component {
                            <div style={{color:'#686b78',fontSize:'13px',fontWeight:'500'}}>4 ITEM</div>
                            <div  style={{paddingTop:'20px'}}>
                                 
-                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/bulleticon.png" style={{height:'15px',width:'15px'}} />&nbsp; Mini Meal</div>
+                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Mini Meal</div>
                                 
                                 <div style={{float:'right'}}>
                                     <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
@@ -102,7 +102,7 @@ export class MidRestaurant extends Component {
                           <Divider />
                           <div  style={{padding:'20px 0px'}}>
                                 
-                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/bulleticon.png" style={{height:'15px',width:'15px'}} />&nbsp; Veg meal with curd</div>
+                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Veg meal with curd</div>
                                 
                                 <div style={{float:'right'}}>
                                     <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
@@ -117,7 +117,7 @@ export class MidRestaurant extends Component {
                           <Divider />
                           <div  style={{paddingTop:'20px'}}>
                                 
-                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/bulleticon.png" style={{height:'15px',width:'15px'}} />&nbsp; Mini Meal</div>
+                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Mini Meal</div>
                                 
                                 <div style={{float:'right'}}>
                                     <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
@@ -131,7 +131,7 @@ export class MidRestaurant extends Component {
                           <Divider />
                           <div  style={{padding:'20px 0px'}}>
                                 
-                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/bulleticon.png" style={{height:'15px',width:'15px'}} />&nbsp; Veg meal with curd</div>
+                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Veg meal with curd</div>
                                 
                                 <div style={{float:'right'}}>
                                     <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
@@ -152,7 +152,7 @@ export class MidRestaurant extends Component {
                            <div style={{color:'#686b78',fontSize:'13px',fontWeight:'500'}}>4 ITEM</div>
                            <div  style={{paddingTop:'20px'}}>
                                 
-                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/bulleticon.png" style={{height:'15px',width:'15px'}} />&nbsp; Omlete</div>
+                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Omlete</div>
                                 
                                 <div style={{float:'right'}}>
                                     <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
@@ -165,7 +165,7 @@ export class MidRestaurant extends Component {
                           <Divider />
                           <div  style={{paddingTop:'20px'}}>
                                 
-                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/bulleticon.png" style={{height:'15px',width:'15px'}} />&nbsp; Masala Omlete</div>
+                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Masala Omlete</div>
                                 
                                 <div style={{float:'right'}}>
                                     <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
@@ -179,7 +179,7 @@ export class MidRestaurant extends Component {
                           <Divider />
                           <div  style={{paddingTop:'20px'}}>
                                 
-                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/bulleticon.png" style={{height:'15px',width:'15px'}} />&nbsp; Omlete</div>
+                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Omlete</div>
                                 
                                 <div style={{float:'right'}}>
                                     <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
@@ -192,7 +192,7 @@ export class MidRestaurant extends Component {
                           <Divider />
                           <div  style={{paddingTop:'20px'}}>
                                 
-                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/bulleticon.png" style={{height:'15px',width:'15px'}} />&nbsp; Masala Omlete</div>
+                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Masala Omlete</div>
                                 
                                 <div style={{float:'right'}}>
                                     <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
@@ -206,7 +206,7 @@ export class MidRestaurant extends Component {
                           <Divider />
                           <div  style={{paddingTop:'20px'}}>
                                 
-                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/bulleticon.png" style={{height:'15px',width:'15px'}} />&nbsp; Omlete</div>
+                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Omlete</div>
                                 
                                 <div style={{float:'right'}}>
                                     <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
