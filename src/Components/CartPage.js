@@ -121,7 +121,7 @@ export class CartPage extends Component {
                             </Panel>
                         </Collapse>
                     </Col>
-                    <Col span={8} style={{padding:'0px 30px'}}>
+                    <Col span={8} style={{padding:'0px 30px',position:'sticky',top:'50px'}}>
                         <Card style={{backgrounColor:'#f7f7f7'}}>
                             <Row>
                                 <Col span={6}>
@@ -136,25 +136,52 @@ export class CartPage extends Component {
                                     </Row>
                                 </Col>
                             </Row>
-                            <div  style={{paddingTop:'20px'}}>
-                                <Col span={3} style={{width:'30px',height:'40px'}}>
-                                  <img src="/img/vegIcon.png" style={{height:'10px',width:'10px'}} />
-                                </Col>
-                                <Col span={14} style={{maxwidth:'130px',height:'40px',display:'flex',fontWeight:'400',fontSize:'14px'}}>
-                                Aloo Patty Sub ( 15 cm, 6 Inch )
-                                </Col>
-                                <Col span={6} >
-                                    <div style={{borderStyle:'solid',borderWidth:'1px',borderColor:'#60b246',display:'flex',alignItems:'center',maxWidth:'50px'}}>&nbsp;-&nbsp;&nbsp;1&nbsp;&nbsp;+&nbsp;</div>
-                                </Col>
-                                  {/* <div style={{borderStyle:'dashed',borderWidth:'1px',height:'20px'}}> */}
-                                 
-                                
-                          </div>
-                                  {/* <div class="row">
-                                      fghfghfghfg
-                                  </div> */}
-                          
-
+                            <div style={{overflowY:'auto',maxHeight:'350px'}}>
+                                <Row>
+                                <div  style={{paddingTop:'20px'}}>
+                                    <Col span={3} style={{width:'30px',height:'40px'}}>
+                                    <img src="/img/vegIcon.png" style={{height:'10px',width:'10px'}} />
+                                    </Col>
+                                    <Col span={14} style={{maxwidth:'130px',height:'40px',display:'flex',fontWeight:'400',fontSize:'14px'}}>
+                                    Aloo Patty Sub ( 15 cm, 6 Inch )
+                                    </Col>
+                                    <Col span={6} >
+                                        <div style={{borderStyle:'solid',borderWidth:'1px',borderColor:'#60b246',textAlign:'center'}}>&nbsp;-&nbsp;&nbsp;1&nbsp;&nbsp;+&nbsp;</div>
+                                    </Col>
+                                    {/* <div style={{borderStyle:'dashed',borderWidth:'1px',height:'20px'}}> */}
+                                    
+                                    
+                               </div>
+                                </Row>
+                            <Row>
+                                <div style={{borderStyle:'dashed',
+                                            borderWidth:'1px',textAlign:'center',
+                                            marginTop:'20px',height:'50px',display:'flex',
+                                            alignItems:'center'}}>
+                                    <img src="/img/percentage.png" style={{marginLeft:'10px'}}></img>
+                                    <text style={{marginLeft:'10px'}}>Apply Coupon</text>
+                                </div>
+                                <div style={{fontSize:'13px',fontWeight:'500',color:'#282c3f',margin:'10px 0px'}}>Bill Details</div>
+                                <Row>
+                                    <Col style={{float:'left',color:'#686b78'}}>Item Total</Col>
+                                    <Col style={{float:'right',color:'#686b78',marginBottom:'10px'}}>₹ 69.52</Col>
+                                </Row>
+                                <Row>
+                                    <Col style={{float:'left',color:'#686b78'}}>Restaurant Charges</Col>
+                                    <Col style={{float:'right',color:'#686b78',marginBottom:'10px'}}>₹ 17.48</Col>
+                                </Row>
+                                <hr style={{color:'#686b78',height:'1px'}} />
+                                <Row>
+                                    <Col style={{float:'left',color:'#686b78'}}>Delivery Fee</Col>
+                                    <Col style={{float:'right',color:'#686b78',marginBottom:'10px'}}>₹ 30</Col>
+                                </Row>
+                                    <Divider style={{height:'2px',fontWeight:'300',color:'#282c3f'}} />
+                            </Row>
+                            </div>
+                                <Row>
+                                    <Col style={{float:'left',color:'#282c3f'}}>To Pay</Col>
+                                    <Col style={{float:'right',color:'#282c3f',marginBottom:'10px'}}>₹ 1117</Col>
+                                </Row>
                         </Card>
                     </Col>
                 </div>

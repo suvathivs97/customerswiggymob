@@ -18,6 +18,25 @@ import {
   const { Header } = Layout;
 
 export class Head extends Component {
+  state = { visible: false, placement: 'left' };
+ 
+  showDrawer = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  onClose = () => {
+    this.setState({
+      visible: false,
+    });
+  };
+
+  onChange = e => {
+    this.setState({
+      placement: e.target.value,
+    });
+  };
     render() {
         return (
             <div>
@@ -28,13 +47,16 @@ export class Head extends Component {
                         <div style={{paddingLeft:'6%'}}>
                            <img src="./logo192" />
                         </div>
-                        <div style={{display:'flex',cursor:'pointer',marginLeft:'30px',maxWidth:'300px',alignItems:'center',marginBottom:'-1px',height:'100%'}}>
-                          <span style={{float:'left',color:'#3d4152',fontWeight:'700'}}>
-                            <text style={{display:'block',fontWeight:"700",color:'#3d4152',whiteSpace:'nowrap',borderBottomWidth:'2px',overflow:'hidden',minWidth:'30px',fontSize:'14px',textOverflow:'ellipsis'}}>Saravanmpatty</text>
-                          </span>
-                           <text style={{fontSize:'14px',marginLeft:'5px',paddingLeft:'5px',color:'#686b78',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',display:'block'}}>Coimbatore,Tamilnadu</text>
-                           <Icon type="down" style={{color:'#fc8019',fontSize:'12px',paddingLeft:'5px',fontWeight:"700"}} />
-                        </div>
+                          <div style={{display:'flex',cursor:'pointer',marginLeft:'30px',maxWidth:'300px',alignItems:'center',marginBottom:'-1px',height:'100%'}}>
+                            <a style={{textDecoration:'none'}} onClick={this.showDrawer}>
+                              <span style={{float:'left',color:'#3d4152',fontWeight:'700'}}>
+                                <text style={{display:'block',fontWeight:"700",color:'#3d4152',whiteSpace:'nowrap',borderBottomWidth:'2px',overflow:'hidden',minWidth:'30px',fontSize:'14px',textOverflow:'ellipsis'}}>Saravanmpatty</text>
+                              </span>
+                              <text style={{fontSize:'14px',marginLeft:'5px',paddingLeft:'5px',color:'#686b78',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',display:'block'}}>Coimbatore,Tamilnadu</text>
+                              <Icon type="down" style={{color:'#fc8019',fontSize:'12px',paddingLeft:'5px',fontWeight:"700"}} />
+                            </a>
+                          </div>
+                        
                         <ul style={{flex:'1',display:'flex',flexDirection:'row-reverse',alignItems:'center',height:'100%',listStyleType:'none'}}>
                           <li style={style}>
                            <div style={eachitem}>
