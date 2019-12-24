@@ -12,7 +12,7 @@ import {
     Avatar,
     Divider,
     Dropdown,
-    Select
+    Select,Drawer
   } from "antd";
   import {Link} from 'react-router-dom'
   const { Header } = Layout;
@@ -37,6 +37,9 @@ export class Head extends Component {
       placement: e.target.value,
     });
   };
+  closeDrawer=async()=>{
+      await this.setState({visible:false})
+  }
     render() {
         return (
             <div>
@@ -53,8 +56,43 @@ export class Head extends Component {
                                 <text style={{display:'block',fontWeight:"700",color:'#3d4152',whiteSpace:'nowrap',borderBottomWidth:'2px',overflow:'hidden',minWidth:'30px',fontSize:'14px',textOverflow:'ellipsis'}}>Saravanmpatty</text>
                               </span>
                               <text style={{fontSize:'14px',marginLeft:'5px',paddingLeft:'5px',color:'#686b78',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',display:'block'}}>Coimbatore,Tamilnadu</text>
-                              <Icon type="down" style={{color:'#fc8019',fontSize:'12px',paddingLeft:'5px',fontWeight:"700"}} />
+                              {/* <Icon type="down" style={{color:'#fc8019',fontSize:'12px',paddingLeft:'5px',fontWeight:"700"}} /> */}
                             </a>
+                            <Drawer
+                                title={<Icon type="close" onClick={this.closeDrawer} />}
+                                placement={this.state.placement}
+                                closable={false}
+                                onClose={this.onClose}
+                                visible={this.state.visible}
+                                width="400px"
+                                >
+                                <div style={{padding:'20px 0px'}}>
+                                  <Input style={{boxShadow:'1px solid #d4d5d9',
+                                                 border:'1px solid #d4d5d9',
+                                                height:'50px'}}
+                                         placeholder="Search for area,streat Name.. "></Input>
+                                </div>
+                                <div style={{border:'1px solid #d4d5d9',marginBottom:'5%'}}>
+                                  <div style={{fontSize:'16px',color:'#282c3f',fontWeight:'500',padding:'5px 24px',minHeight:'70px',display:'flex',alignItems:'center'}}>
+                                   <div>
+                                       <img src="/img/current.png" style={{width:'18px',height:'18px',marginRight:'4px'}}></img>Get Current Location
+                                       <div style={{fontSize:'13px',color:'#93959f',marginTop:'5px',marginLeft:'15%'}}>Using GPS</div>
+                                   </div>
+                                  </div>
+                                </div>
+                                <div style={{border:'1px solid #d4d5d9',padding:'10px 0px',marginBottom:'5%'}}>
+                                  <div style={{color:'#7e808c',fontSize:'12px',marginLeft:'56px'}}>SAVED ADDRESS</div>
+                                  <Row style={{padding:'5px 24px'}}>
+                                    <Col span={2} >
+                                      <Icon type="home" />
+                                    </Col>
+                                    <Col span={20}>
+                                      <Row style={{fontSize:'16px',color:'#282c3f',fontWeight:'500'}}>Home</Row>
+                                      <Row style={{fontSize:'13px',color:'#93959f',marginTop:'5px'}}>12, sara complex, Saravanampatti, Coimbatore, Tamil Nadu 641035, India</Row>
+                                    </Col>
+                                  </Row>
+                                </div>
+                            </Drawer>
                           </div>
                         
                         <ul style={{flex:'1',display:'flex',flexDirection:'row-reverse',alignItems:'center',height:'100%',listStyleType:'none'}}>
