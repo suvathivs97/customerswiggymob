@@ -18,28 +18,68 @@ import {
   const { Header } = Layout;
 
 export class Head extends Component {
-  state = { visible: false, placement: 'left' };
+  state = { visible: false, 
+            placement: 'left',
+            login:false,
+            loginPlace:'right',
+            OtpLogin:false,
+            phoneno:'',otp:'',
+            signUp:false };
  
+
+//Location
   showDrawer = () => {
     this.setState({
       visible: true,
     });
   };
-
   onClose = () => {
     this.setState({
       visible: false,
     });
   };
-
-  onChange = e => {
-    this.setState({
-      placement: e.target.value,
-    });
-  };
   closeDrawer=async()=>{
       await this.setState({visible:false})
   }
+
+  //Login
+  loginDrawer=async()=>{
+    await this.setState({login:true,LoginOrOtp:true})
+  }
+  CloseLoginDrawer=async()=>{
+    await this.setState({login:false})
+  }
+  loginSubmit=async()=>{
+    await this.setState({OtpLogin:true,LoginOrOtp:false})
+  }
+
+  //Otp Login
+  BackToLogin=()=>{
+     this.setState({login:true,LoginOrOtp:true,OtpLogin:false})
+  }
+  CloseOtpLogin=()=>{
+    this.setState({login:false,OtpLogin:false})
+  }
+  LoginOtpSubmit=()=>{
+    this.setState({login:false,OtpLogin:false})
+  }
+
+  //SignUp
+
+  SignUpDrawer=()=>{
+    this.setState({signUp:true,login:false,OtpLogin:false})
+  }
+  CloseSignUpDrawer=()=>{
+    this.setState({signUp:false,login:false,OtpLogin:false})
+  }
+  signupSubmit=()=>{
+    this.setState({signUp:false,login:false,OtpLogin:false})
+  }
+  GoTologinDrawer=async()=>{
+    await this.setState({login:true,LoginOrOtp:true,signUp:false})
+  }
+
+
     render() {
         return (
             <div>
@@ -60,12 +100,12 @@ export class Head extends Component {
                             </a>
                             <Drawer
                                 title={<Icon type="close" onClick={this.closeDrawer} />}
-                                placement={this.state.placement}
+                                // placement={this.state.placement}
                                 closable={false}
                                 onClose={this.onClose}
                                 visible={this.state.visible}
                                 width="400px"
-                                >
+                             >
                                 <div style={{padding:'20px 0px'}}>
                                   <Input style={{boxShadow:'1px solid #d4d5d9',
                                                  border:'1px solid #d4d5d9',
@@ -106,10 +146,136 @@ export class Head extends Component {
                           </li>
                           <li style={style}>
                             <div style={eachitem}>
-                              <a href="" style={combine}>
+                              <a style={combine} onClick={this.loginDrawer}>
                                 <Icon type="login" style={icon}/>
                                 <text style={text}>Sign in</text>
                               </a>
+                              {this.state.LoginOrOtp?
+                                  <Drawer
+                                    title={<Icon type="close" onClick={this.CloseLoginDrawer} />}
+                                    placement={this.state.loginPlace}
+                                    closable={false}
+                                    onClose={this.CloseLoginDrawer}
+                                    visible={this.state.login}
+                                    width="400px"
+                                  >
+                                    <div style={{padding:'0px 20px'}}>
+                                      <div style={{display:'flex',alignItems:'center'}}>
+                                          <Col span={19} style={{float:'left'}}>
+                                            <div style={{fontSize:'25px',fontWeight:'500'}}>Login</div>
+                                            <div>or <text style={{color:'#fc8019',cursor:'pointer'}} onClick={this.SignUpDrawer}>Create an account</text></div>
+                                          </Col>
+                                          <Col span={6} style={{float:'right'}}>
+                                              <img src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/Image-login_btpq7r" width="80" height="85"></img>
+                                          </Col>
+                                      </div>
+                                      <div style={{marginTop:'20px'}}>
+                                        <input placeholder="Phone Number"
+                                                style={{padding:'15px',width:'100%'}}>
+                                        </input>
+                                      </div>
+                                      <div style={{marginTop:'20px'}}>
+                                          <button style={{backgroundColor:'#fc8019',border:'none',textAlign:'center',width:'100%',padding:'10px'}} onClick={this.loginSubmit}>Login</button>
+                                      </div>
+                                    </div>
+                                </Drawer>
+                             :
+                              <Drawer
+                                  title={<Icon type="arrow-left" onClick={this.BackToLogin}/>}
+                                  placement={this.state.loginPlace}
+                                  closable={false}
+                                  onClose={this.CloseOtpLogin}
+                                  visible={this.state.OtpLogin}
+                                  width="400px"
+                              >
+                                  <div style={{padding:'0px 20px'}}>
+                                    <div style={{display:'flex',alignItems:'center'}}>
+                                        <Col span={19} style={{float:'left'}}>
+                                          <div style={{fontSize:'25px',fontWeight:'500'}}>Enter OTP</div>
+                                          <div>We've sent an OTP to your phone number.</div>
+                                        </Col>
+                                        <Col span={6} style={{float:'right'}}>
+                                            <img src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/Image-login_btpq7r" width="80" height="85"></img>
+                                        </Col>
+                                    </div>
+                                    <div style={{marginTop:'20px'}}>
+                                      <input placeholder="Phone Number"
+                                             style={{padding:'15px',width:'100%'}}
+                                             value={this.state.phoneno}
+                                             onChange={e=>this.setState({phoneno:e.target.value})}
+                                      >
+                                      </input>
+                                    </div>
+                                    <div style={{marginTop:'20px'}}>
+                                      <input placeholder="OTP"
+                                             style={{padding:'15px',width:'100%'}}
+                                             value={this.state.otp}
+                                             onChange={e=>this.setState({otp:e.target.value})}
+                                      >
+                                      </input>
+                                    </div>
+                                    
+                                    <div style={{marginTop:'20px'}}>
+                                        <button style={{backgroundColor:'#fc8019',border:'none',textAlign:'center',width:'100%',padding:'10px'}} onClick={this.LoginOtpSubmit}>Verify OTP</button>
+                                    </div>
+                                  </div>
+                              </Drawer>
+                             }
+                              <Drawer
+                                    title={<Icon type="close" onClick={this.CloseSignUpDrawer} />}
+                                    placement={this.state.loginPlace}
+                                    closable={false}
+                                    onClose={this.CloseSignUpDrawer}
+                                    visible={this.state.signUp}
+                                    width="400px"
+                                  >
+                                    <div style={{padding:'0px 20px'}}>
+                                      <div style={{display:'flex',alignItems:'center'}}>
+                                          <Col span={19} style={{float:'left'}}>
+                                            <div style={{fontSize:'25px',fontWeight:'500'}}>Sign up</div>
+                                            <div>or <text style={{color:'#fc8019',cursor:'pointer'}} onClick={this.GoTologinDrawer}>login to your account</text></div>
+                                          </Col>
+                                          <Col span={6} style={{float:'right'}}>
+                                              <img src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/Image-login_btpq7r" width="80" height="85"></img>
+                                          </Col>
+                                      </div>
+                                      <div style={{marginTop:'20px'}}>
+                                        <input placeholder="Phone Number"
+                                              style={{padding:'15px',width:'100%'}}
+                                              value={this.state.phoneno}
+                                              onChange={e=>this.setState({phoneno:e.target.value})}
+                                        >
+                                        </input>
+                                      </div>
+                                      <div style={{marginTop:'20px'}}>
+                                          <input placeholder="Name"
+                                                style={{padding:'15px',width:'100%'}}
+                                                value={this.state.name}
+                                                onChange={e=>this.setState({name:e.target.value})}
+                                          >
+                                          </input>
+                                      </div>
+                                      <div style={{marginTop:'20px'}}>
+                                          <input placeholder="Email"
+                                                style={{padding:'15px',width:'100%'}}
+                                                value={this.state.email}
+                                                onChange={e=>this.setState({email:e.target.value})}
+                                          >
+                                          </input>
+                                      </div>
+                                      <div style={{marginTop:'20px'}}>
+                                          <input placeholder="Password"
+                                                style={{padding:'15px',width:'100%'}}
+                                                value={this.state.password}
+                                                onChange={e=>this.setState({password:e.target.value})}
+                                          >
+                                          </input>
+                                      </div>
+                                      <div style={{marginTop:'20px'}}>
+                                          <button style={{backgroundColor:'#fc8019',border:'none',textAlign:'center',width:'100%',padding:'10px'}} onClick={this.signupSubmit}>CONTINUE</button>
+                                      </div>
+                                    </div>
+                                </Drawer>
                             </div>
                           </li>
                           <li style={style}>

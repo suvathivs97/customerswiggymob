@@ -3,7 +3,8 @@ import {Row,Col,Icon,Divider} from 'antd'
 import Scrollspy from 'react-scrollspy'
 import AllRestaurants from './AllRestaurants'
 import { NavLink } from "react-router-dom";
-
+import axios from 'axios'
+import port from '../port'
 export class MidContent extends Component {
     state={
         obj:[],tempids:[11,12,13,14]
@@ -48,9 +49,14 @@ export class MidContent extends Component {
                 foodtype:'North Indian'   
              }
         ]
+        // const res=await axios.get(port+'/getRestaurants')
+        // console.log(res,"response")
+        // if(res.data){
+        //     await this.setState({obj:res.data.restaurants})
+        // }
+        await this.setState({obj})
         document.getElementById('11').style.color = "white";
         document.getElementById('11').style.backgroundColor = "#e46d47";
-        await this.setState({obj})
       }
 
       changecolor=(data)=>{
@@ -139,7 +145,7 @@ export class MidContent extends Component {
                                 <div class="col-6 col-sm-4 col-lg-4" style={{paddingBottom:'30px'}}>
                                   <NavLink to={"/SingleRestaurant"} style={{textDecoration:'none'}}>
                                    <div class="card" style={{width: '250px'}}>
-                                        <img class="card-img-top" src={p.image} />
+                                        <img class="card-img-top" src={port+`/image/fooditems/${p.image}`} />
                                         <div class="card-body">
                                             <div class="card-title" style={{fontSize:'16px',fontWeight:'500',wordBreak:'break-word'}}>{p.name}</div>
                                             <div class="card-text" style={{color:'#686b78',fontSize:'13px',marginTop:'-10px'}}>{p.foodtype}</div>
@@ -172,7 +178,7 @@ export class MidContent extends Component {
                                 {this.state.obj.map((p,i)=>{return(
                                 <div class="col-6 col-sm-4 col-lg-4" style={{paddingBottom:'30px'}}>
                                    <div class="card" style={{width: '250px'}}>
-                                        <img class="card-img-top" src={p.image} />
+                                        <img class="card-img-top" src={port+`/image/fooditems/${p.image}`} />
                                         <div class="card-body">
                                             <div class="card-title" style={{fontSize:'16px',fontWeight:'500',wordBreak:'break-word'}}>{p.name}</div>
                                             <div class="card-text" style={{color:'#686b78',fontSize:'13px',marginTop:'-10px'}}>{p.foodtype}</div>
