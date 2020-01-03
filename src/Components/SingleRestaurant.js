@@ -3,9 +3,34 @@ import Head from './Head'
 import Bottom from './Bottom'
 import {Layout,Col,Row,Icon} from 'antd'
 import MidRestaurant from './MidRestaurant'
+import axios from 'axios'
+import port from '../port'
 const { Header,Footer,Content } = Layout;
 
 export class SingleRestaurant extends Component {
+    constructor({ match }) {
+        super();
+        this.match = match;
+        this.state = {
+            address:'',
+            city:'',
+            FoodItem:[],
+            restaurant:'',
+            image:''
+        };
+      }
+
+      componentDidMount=async()=>{
+        //   console.log(this.match.params,"this.match.params")
+          let res=await axios.get(port+`/getFoodItems?restaurantId=${this.match.params.id}&customerId=5df9de26dc412609dcb686d3`)
+          console.log(res,'res for get one res')
+          if(res.data.success){
+            await this.setState({address:this.match.params.address,city:this.match.params.city,FoodItem:res.data.items,restaurant:this.match.params.restaurant,image:this.match.params.image})
+          }
+          else{
+              console.log('getFoodItems error')
+          }
+      }
     render() {
         return (
             <div>
@@ -14,17 +39,17 @@ export class SingleRestaurant extends Component {
                  <Head />
               </Header>
               <Content style={{marginTop:'20px'}}>
-                 <div style={{color:'#93959f',fontSize:'12px',paddingLeft:'100px'}}>Home / Coimbatore</div>
+                 <div style={{color:'#93959f',fontSize:'12px',paddingLeft:'100px'}}>Home / {this.state.city}</div>
                  <div style={{backgroundColor:'black',flex:'1'}}>
                     <div style={{padding:'50px 70px'}}>
                         <Row>
                             <Col span={6}>
-                               <img height="150" width="240" src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/en5tssfnk3ag3rzn65kd" alt="" />
+                               <img height="150" width="240" src={port+`/image/restaurants/${this.state.image}`} alt="" />
                             </Col>
                             <Col span={10} style={{color:'#fff'}}>
-                               <div style={{textOverflow:'ellipsis',fontSize:'32px',fontWeight:'300'}}>sddsd</div>
-                               <div style={{paddingTop:'4px',fontSize:'15px',opacity:'0.7'}}>sddsd</div>
-                               <div style={{paddingTop:'4px',fontSize:'15px',opacity:'0.7'}}>sddsd</div>
+                               <div style={{textOverflow:'ellipsis',fontSize:'32px',fontWeight:'300'}}>{this.state.restaurant}</div>
+                               <div style={{paddingTop:'4px',fontSize:'15px',opacity:'0.7'}}>North Indian</div>
+                               <div style={{paddingTop:'4px',fontSize:'15px',opacity:'0.7'}}>{this.state.address}</div>
                                <div style={{paddingTop:'10px'}}>
                                    <Col span={5} style={{borderRight:'1px solid grey'}}>
                                        <div style={{fontWeight:'600',fontSize:'15px',display:'flex',alignItems:'center'}}>
@@ -59,8 +84,7 @@ export class SingleRestaurant extends Component {
                     </div>
                  </div>
                  {/* <div><input style={{borderColor:'#fff'}}></input></div> */}
-                 <MidRestaurant />
-
+                 <MidRestaurant id={this.match.params.id}/>
               </Content>
               <Footer>
                   <Bottom />

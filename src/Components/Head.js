@@ -12,10 +12,19 @@ import {
     Avatar,
     Divider,
     Dropdown,
-    Select,Drawer
+    Select,Drawer,message
   } from "antd";
   import {Link} from 'react-router-dom'
-  const { Header } = Layout;
+import axios from 'axios';
+import port from '../port'
+
+message.config({
+  top: 150,
+  duration: 2,
+  maxCount: 3,
+});
+
+const { Header } = Layout;
 
 export class Head extends Component {
   state = { visible: false, 
@@ -24,7 +33,19 @@ export class Head extends Component {
             loginPlace:'right',
             OtpLogin:false,
             phoneno:'',otp:'',
-            signUp:false };
+            signUp:false,
+            orders:true,
+            verify:false };
+
+
+componentDidMount=async()=>{
+  let id=localStorage.getItem('id')
+  if(id == null && id == undefined){
+    await this.setState({orders:false})
+  }else{
+    await this.setState({orders:true})
+  }
+}
  
 
 //Location
@@ -50,7 +71,19 @@ export class Head extends Component {
     await this.setState({login:false})
   }
   loginSubmit=async()=>{
-    await this.setState({OtpLogin:true,LoginOrOtp:false})
+    if(this.state.phoneno != ''){
+      const res=await axios.post(port+'/sendOTPLogin',{phoneno:this.state.phoneno})
+      console.log(res,"response")
+      if(res.data.success){
+        message.success(res.data.message)
+        await this.setState({OtpLogin:true,LoginOrOtp:false})
+      }else{
+        message.error(res.data.message)
+      }
+    }else{
+      message.error('Please enter the phone number')
+    }
+
   }
 
   //Otp Login
@@ -60,8 +93,18 @@ export class Head extends Component {
   CloseOtpLogin=()=>{
     this.setState({login:false,OtpLogin:false})
   }
-  LoginOtpSubmit=()=>{
-    this.setState({login:false,OtpLogin:false})
+  LoginOtpSubmit=async()=>{
+    if(this.state.otp != ''){
+      const res=await axios.post(port+'/verifyOTPLogin',{otp:this.state.otp,phoneno:this.state.phoneno})
+      if(res.data.success){
+        localStorage.setItem('id',res.data.name)
+        await this.setState({login:false,OtpLogin:false})
+      }else{
+        message.error(res.data.message) 
+      }
+    }else{
+      message.error('Please enter OTP')
+    }
   }
 
   //SignUp
@@ -72,15 +115,45 @@ export class Head extends Component {
   CloseSignUpDrawer=()=>{
     this.setState({signUp:false,login:false,OtpLogin:false})
   }
-  signupSubmit=()=>{
+  signupSubmit=async()=>{
+    
     this.setState({signUp:false,login:false,OtpLogin:false})
+    localStorage.setItem('id','123456')
   }
   GoTologinDrawer=async()=>{
     await this.setState({login:true,LoginOrOtp:true,signUp:false})
   }
 
+  //Logout
+  logout=async()=>{
+    localStorage.removeItem('id')
+    window.location.reload()
+  }
+
 
     render() {
+      const menu = (
+        <Menu style={{width:'150px'}}>
+           <Menu.Item>
+             <a href="/Profilemainpage/profile" style={{textDecoration:'none'}}>Profile</a>
+           </Menu.Item>
+          <Menu.Item>
+            <a href="/Profilemainpage/order" style={{textDecoration:'none'}}>
+              Orders
+            </a>
+          </Menu.Item>
+          <Menu.Item>
+            <a href="/Profilemainpage/favourite" style={{textDecoration:'none'}}>
+              Favourite
+            </a>
+          </Menu.Item>
+          <Menu.Item>
+            <a onClick={this.logout} style={{textDecoration:'none'}}>
+              Logout
+            </a>
+          </Menu.Item>
+        </Menu>
+      );
         return (
             <div>
               <Layout className="layout">
@@ -148,7 +221,13 @@ export class Head extends Component {
                             <div style={eachitem}>
                               <a style={combine} onClick={this.loginDrawer}>
                                 <Icon type="login" style={icon}/>
-                                <text style={text}>Sign in</text>
+                                {this.state.orders?
+                                 <Dropdown overlay={menu} >
+                                   <text style={text}>Name</text>
+                                 </Dropdown>
+                                 :
+                                 <text style={text}>Sign in</text>
+                                }
                               </a>
                               {this.state.LoginOrOtp?
                                   <Drawer
@@ -171,7 +250,9 @@ export class Head extends Component {
                                       </div>
                                       <div style={{marginTop:'20px'}}>
                                         <input placeholder="Phone Number"
-                                                style={{padding:'15px',width:'100%'}}>
+                                               style={{padding:'15px',width:'100%'}}
+                                               onChange={e=>this.setState({phoneno:e.target.value})}
+                                        >
                                         </input>
                                       </div>
                                       <div style={{marginTop:'20px'}}>
@@ -240,6 +321,7 @@ export class Head extends Component {
                                           </Col>
                                       </div>
                                       <div style={{marginTop:'20px'}}>
+                                        
                                         <input placeholder="Phone Number"
                                               style={{padding:'15px',width:'100%'}}
                                               value={this.state.phoneno}
@@ -252,6 +334,7 @@ export class Head extends Component {
                                                 style={{padding:'15px',width:'100%'}}
                                                 value={this.state.name}
                                                 onChange={e=>this.setState({name:e.target.value})}
+                                                disabled={!this.state.verify}
                                           >
                                           </input>
                                       </div>
@@ -260,6 +343,7 @@ export class Head extends Component {
                                                 style={{padding:'15px',width:'100%'}}
                                                 value={this.state.email}
                                                 onChange={e=>this.setState({email:e.target.value})}
+                                                disabled={!this.state.verify}
                                           >
                                           </input>
                                       </div>
@@ -268,6 +352,7 @@ export class Head extends Component {
                                                 style={{padding:'15px',width:'100%'}}
                                                 value={this.state.password}
                                                 onChange={e=>this.setState({password:e.target.value})}
+                                                disabled={!this.state.verify}
                                           >
                                           </input>
                                       </div>

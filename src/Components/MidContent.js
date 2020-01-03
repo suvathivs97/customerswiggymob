@@ -2,59 +2,61 @@ import React, { Component } from 'react'
 import {Row,Col,Icon,Divider} from 'antd'
 import Scrollspy from 'react-scrollspy'
 import AllRestaurants from './AllRestaurants'
-import { NavLink } from "react-router-dom";
 import axios from 'axios'
 import port from '../port'
+import { Link } from "react-router-dom";
+
 export class MidContent extends Component {
     state={
         obj:[],tempids:[11,12,13,14]
     }
 
      componentDidMount=async()=>{
-       let obj=[]
-       obj=[
-            {
-               image:"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/en5tssfnk3ag3rzn65kd",
-               name:'Shree Akssyam',
-               foodtype:'South Indian'
-            },
-            {
-               image:"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/n98yqjy0v5b1bttgvvul",
-               name:'Fasos',
-               foodtype:'Fast Food,North Indian'   
-            },
-            {
-               image:"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/en5tssfnk3ag3rzn65kd",
-               name:'Sharma Punjab Restaurant',
-               foodtype:'North Indian'   
-            },
-            {
-               image:"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/nqvw6lxqlus3lmdbefn0",
-               name:'Sharma Punjab Restaurant',
-               foodtype:'North Indian'   
-            },
-            {
-                image:"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/n98yqjy0v5b1bttgvvul",
-                name:'Fasos',
-                foodtype:'Fast Food,North Indian'   
-             },
-             {
-                image:"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/en5tssfnk3ag3rzn65kd",
-                name:'Sharma Punjab Restaurant',
-                foodtype:'North Indian'   
-             },
-             {
-                image:"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/nqvw6lxqlus3lmdbefn0",
-                name:'Sharma Punjab Restaurant',
-                foodtype:'North Indian'   
-             }
-        ]
-        // const res=await axios.get(port+'/getRestaurants')
+    //    let obj=[]
+    //    obj=[
+    //         {
+    //            image:"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/en5tssfnk3ag3rzn65kd",
+    //            name:'Shree Akssyam',
+    //            foodtype:'South Indian'
+    //         },
+    //         {
+    //            image:"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/n98yqjy0v5b1bttgvvul",
+    //            name:'Fasos',
+    //            foodtype:'Fast Food,North Indian'   
+    //         },
+    //         {
+    //            image:"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/en5tssfnk3ag3rzn65kd",
+    //            name:'Sharma Punjab Restaurant',
+    //            foodtype:'North Indian'   
+    //         },
+    //         {
+    //            image:"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/nqvw6lxqlus3lmdbefn0",
+    //            name:'Sharma Punjab Restaurant',
+    //            foodtype:'North Indian'   
+    //         },
+    //         {
+    //             image:"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/n98yqjy0v5b1bttgvvul",
+    //             name:'Fasos',
+    //             foodtype:'Fast Food,North Indian'   
+    //          },
+    //          {
+    //             image:"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/en5tssfnk3ag3rzn65kd",
+    //             name:'Sharma Punjab Restaurant',
+    //             foodtype:'North Indian'   
+    //          },
+    //          {
+    //             image:"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/nqvw6lxqlus3lmdbefn0",
+    //             name:'Sharma Punjab Restaurant',
+    //             foodtype:'North Indian'   
+    //          }
+    //     ]
+            // await this.setState({obj})
+
+        const res=await axios.get(port+'/customerGetRestaurants')
         // console.log(res,"response")
-        // if(res.data){
-        //     await this.setState({obj:res.data.restaurants})
-        // }
-        await this.setState({obj})
+        if(res.data.success){
+            await this.setState({obj:res.data.restaurants})
+        }
         document.getElementById('11').style.color = "white";
         document.getElementById('11').style.backgroundColor = "#e46d47";
       }
@@ -140,12 +142,14 @@ export class MidContent extends Component {
                             <div style={{paddingLeft:'60px',flex:'1',contain:'layout'}}>
                             <div id="filter_11">
                             <div style={{fontSize:'28px',fontWeight:'600',marginBottom:'10px'}}>Popular Brands</div>
-                            <div class="row" >
-                                {this.state.obj.map((p,i)=>{return(
+                            <div class="row" style={{marginTop:'20px'}}>
+                                {this.state.obj.map((p,i)=>{
+                                 if(i<3){
+                                    return(
                                 <div class="col-6 col-sm-4 col-lg-4" style={{paddingBottom:'30px'}}>
-                                  <NavLink to={"/SingleRestaurant"} style={{textDecoration:'none'}}>
+                                  <Link to={"/SingleRestaurant/" + p.restaurant_id + '/' + p.address + '/' + p.city + '/' + p.name + '/' + p.image} style={{textDecoration:'none'}}>
                                    <div class="card" style={{width: '250px'}}>
-                                        <img class="card-img-top" src={port+`/image/fooditems/${p.image}`} />
+                                        <img class="card-img-top" src={port+`/image/restaurants/${p.image}`} height="150px" width="150px" alt=""/>
                                         <div class="card-body">
                                             <div class="card-title" style={{fontSize:'16px',fontWeight:'500',wordBreak:'break-word'}}>{p.name}</div>
                                             <div class="card-text" style={{color:'#686b78',fontSize:'13px',marginTop:'-10px'}}>{p.foodtype}</div>
@@ -162,23 +166,26 @@ export class MidContent extends Component {
                                                 </div>
                                                 <hr style={{height:'1px'}} />
                                                 <div style={{color:'#8a584b',fontSize:'12px',justifyContent:'space-between',display:'flex'}}>
-                                                 <img src="/percentage.png"></img>60 % off | Use coupon Welcome60
+                                                 <img src="/percentage.png" alt=""></img>60 % off | Use coupon Welcome60
                                                 </div>
                                         </div>
                                     </div>
-                                    </NavLink>
+                                    </Link>
                                 </div>
-                                )})}
+                                )} })}
                                 </div>
                                 <hr style={{height:'2px',color:'#bebfc5',borderStyle:'dashed'}} />
                                 </div>
                          <div id="filter_12">
                            <div style={{fontSize:'28px',fontWeight:'600',marginBottom:'10px'}}>Express Delivery</div>
                             <div class="row" >
-                                {this.state.obj.map((p,i)=>{return(
+                                {this.state.obj.map((p,i)=>{
+                              if(i<3){
+                               return(
                                 <div class="col-6 col-sm-4 col-lg-4" style={{paddingBottom:'30px'}}>
+                                   <Link to={"/Pestcontrol/" + p.restaurant_id + '/' + p.address + '/' + p.city + '/' + p.name + '/' + p.image} style={{textDecoration:'none'}}>
                                    <div class="card" style={{width: '250px'}}>
-                                        <img class="card-img-top" src={port+`/image/fooditems/${p.image}`} />
+                                        <img class="card-img-top" src={port+`/image/restaurants/${p.image}`} height="150px" width="150px" alt=""/>
                                         <div class="card-body">
                                             <div class="card-title" style={{fontSize:'16px',fontWeight:'500',wordBreak:'break-word'}}>{p.name}</div>
                                             <div class="card-text" style={{color:'#686b78',fontSize:'13px',marginTop:'-10px'}}>{p.foodtype}</div>
@@ -195,12 +202,13 @@ export class MidContent extends Component {
                                                 </div>
                                                 <hr style={{height:'1px'}} />
                                                 <div style={{color:'#8a584b',fontSize:'12px',justifyContent:'space-between',display:'flex'}}>
-                                                 <img src="/img/percentage.png"></img>60 % off | Use coupon Welcome60
+                                                 <img src="/img/percentage.png" alt=""></img>60 % off | Use coupon Welcome60
                                                 </div>
                                         </div>
                                     </div>
+                                    </Link>
                                 </div>
-                                )})}
+                                )} })}
                                 </div>
                                 <hr style={{height:'2px',color:'#bebfc5',borderStyle:'dashed'}} />
                             </div>
@@ -208,10 +216,13 @@ export class MidContent extends Component {
                         <div id="filter_13">
                           <div style={{fontSize:'28px',fontWeight:'600',marginBottom:'10px'}}>Only on Swiggy</div>
                             <div class="row" >
-                                {this.state.obj.map((p,i)=>{return(
+                                {this.state.obj.map((p,i)=>{
+                                    if(i<3){
+                                    return(
                                 <div class="col-6 col-sm-4 col-lg-4" style={{paddingBottom:'30px'}}>
+                                  <Link to={"/Pestcontrol/" + p.restaurant_id + '/' + p.address + '/' + p.city + '/' + p.name + '/' + p.image} style={{textDecoration:'none'}}>
                                    <div class="card" style={{width: '250px'}}>
-                                        <img class="card-img-top" src={p.image} />
+                                        <img class="card-img-top" src={port+`/image/restaurants/${p.image}`} height="150px" width="150px" alt=""/>
                                         <div class="card-body">
                                             <div class="card-title" style={{fontSize:'16px',fontWeight:'500',wordBreak:'break-word'}}>{p.name}</div>
                                             <div class="card-text" style={{color:'#686b78',fontSize:'13px',marginTop:'-10px'}}>{p.foodtype}</div>
@@ -228,12 +239,13 @@ export class MidContent extends Component {
                                                 </div>
                                                 <hr style={{height:'1px'}} />
                                                 <div style={{color:'#8a584b',fontSize:'12px',justifyContent:'space-between',display:'flex'}}>
-                                                 <img src="/percentage.png"></img>60 % off | Use coupon Welcome60
+                                                 <img src="/percentage.png" alt=""></img>60 % off | Use coupon Welcome60
                                                 </div>
                                         </div>
                                     </div>
+                                    </Link>
                                 </div>
-                                )})}
+                                )} })}
                                 </div>
                                 <hr style={{height:'2px',color:'#bebfc5',borderStyle:'dashed'}} />
                             </div>
@@ -241,10 +253,13 @@ export class MidContent extends Component {
                         <div id="filter_14">
                           <div style={{fontSize:'28px',fontWeight:'600',marginBottom:'10px'}}>Vegetarian Options</div>
                             <div class="row" >
-                                {this.state.obj.map((p,i)=>{return(
+                                {this.state.obj.map((p,i)=>{
+                                    if(i<3){
+                                    return(
                                 <div class="col-6 col-sm-4 col-lg-4" style={{paddingBottom:'30px'}}>
+                                 <Link to={"/Pestcontrol/" + p.restaurant_id + '/' + p.address + '/' + p.city + '/' + p.name + '/' + p.image} style={{textDecoration:'none'}}>
                                    <div class="card" style={{width: '250px'}}>
-                                        <img class="card-img-top" src={p.image} />
+                                        <img class="card-img-top" src={port+`/image/restaurants/${p.image}`} height="150px" width="150px" alt=""/>
                                         <div class="card-body">
                                             <div class="card-title" style={{fontSize:'16px',fontWeight:'500',wordBreak:'break-word'}}>{p.name}</div>
                                             <div class="card-text" style={{color:'#686b78',fontSize:'13px',marginTop:'-10px'}}>{p.foodtype}</div>
@@ -261,12 +276,13 @@ export class MidContent extends Component {
                                                 </div>
                                                 <hr style={{height:'1px'}} />
                                                 <div style={{color:'#8a584b',fontSize:'12px',justifyContent:'space-between',display:'flex'}}>
-                                                 <img src="/percentage.png"></img>60 % off | Use coupon Welcome60
+                                                 <img src="/percentage.png" alt=""></img>60 % off | Use coupon Welcome60
                                                 </div>
                                         </div>
                                     </div>
+                                    </Link>
                                 </div>
-                                )})}
+                                )} })}
                                 </div>
                                 <hr style={{height:'2px',color:'#bebfc5',borderStyle:'dashed'}} />
                               </div>
