@@ -36,7 +36,6 @@ export class MidRestaurant extends Component {
              }
              
          ]
-        //  await this.setState({obj})
 
         //  document.getElementById('recom').style.color = "white";
         //  document.getElementById('recom').style.backgroundColor = "#e46d47";
@@ -69,30 +68,30 @@ export class MidRestaurant extends Component {
             count = 0; 
         }
         console.log(outputArray,"outjhhg")
-        this.state.categories.push("Recommended")
+        let categories=this.state.categories
+        categories.push("Recommended")
         for(let i=0;i<outputArray.length;i++){
-            this.state.categories.push(outputArray[i])
+            categories.push(outputArray[i])
         }
+        await this.setState({categories,obj})
         console.log(this.state.categories,"categories")
-        // await this.setState({categories:outputArray})
           
        }
 
 
        
     render() {
+        console.log(this.state.categories,"this.state.categories")
         return (
-            <div style={{backgroundColor:'#fff'}}>
+             <div style={{backgroundColor:'#fff'}}>
             <Row>
                 <Col span={6} style={{padding:'40px 0px',position:'sticky',top:'50px'}}>
                     <div style={{display:'flex',float:'right'}}>
                      <div style={{height:'300px',paddingRight:'35px'}}>
                      <Scrollspy items={ this.state.categories} currentClassName="currentres" style={{marginLeft:'-40px'}}>
-                     {/* <div><a href="#11"  style={{textDecoration:'none',fontSize:'15px',fontWeight:'400',paddingTop:'5px',color:'black'}}>Recommended</a></div> */}
                          {this.state.categories.map(p=>{return(
                              <div><a href={p} id={p=='Recommended' ? 'recom':''} style={{textDecoration:'none',fontSize:'15px',fontWeight:'400',paddingTop:'5px',color:'black'}} >{p}</a></div>
                          )})}
-                         {/* <div><a href="#13" style={{textDecoration:'none',fontSize:'15px',fontWeight:'400',paddingTop:'5px',color:'black'}}>Quick bites</a></div> */}
                      </Scrollspy>
                      </div>
                     </div>
@@ -113,7 +112,7 @@ export class MidRestaurant extends Component {
                                              <div style={{float:'left',fontSize:'15px',color:'#535665'}}>
                                              ₹ 400
                                              </div>
-                                             <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',float:'right',height:'30px',width:'70px'}}>
+                                             <button style={{backgroundColor:'#fff',borderWidth:'1px',float:'right',height:'30px',width:'70px'}}>
                                                  <div style={{color:'#60b246',fontSize:'14px',textAlign:'center'}}>ADD</div> 
                                              </button>
                                            </Row>
@@ -153,147 +152,11 @@ export class MidRestaurant extends Component {
                          </div>
                          {p == 'Recommended'?
                            <div></div>:
-                           <Divider />}  
-                         </div>
+                             <Divider />}  
+                            </div>
                          )})}
                          </div>
-                      )})}          
-                    {/* <div id="12" style={{padding:'20px 0px',borderBottom:'2px solid black'}}>
-                        <div style={{fontSize:'32px',fontWeight:'600'}}>Meals</div>
-                        <div style={{color:'#686b78',fontSize:'13px',fontWeight:'500'}}>4 ITEM</div>
-
-                        <div  style={{paddingTop:'20px'}}>
-                             
-                             <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Mini Meal</div>
-                             
-                             <div style={{float:'right'}}>
-                                 <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
-                                                     <div style={{color:'#60b246',fontSize:'14px',textAlign:'center'}}>ADD</div> 
-                                 </button>
-                             </div>
-                             <br />
-                             <div style={{fontSize:'13px',color:'#7e808c',paddingLeft:'20px'}}>&nbsp;Rice + sambar + rasam +poriyal</div>
-                             <div style={{fontSize:'15px',color:'#535665',paddingLeft:'20px'}}>&nbsp;₹ 50</div>
-                       </div>
-                       <Divider />
-                       <div  style={{padding:'20px 0px'}}>
-                             
-                             <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Veg meal with curd</div>
-                             
-                             <div style={{float:'right'}}>
-                                 <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
-                                                     <div style={{color:'#60b246',fontSize:'14px',textAlign:'center'}}>ADD</div> 
-                                 </button>
-                             </div>
-                             <br />
-                             <div style={{fontSize:'13px',color:'#7e808c',paddingLeft:'20px'}}>&nbsp;Rice + sambar + rasam +poriyal</div>
-                             <div style={{fontSize:'15px',color:'#535665',paddingLeft:'20px'}}>&nbsp;₹ 100</div>
-                       </div>
-
-                       <Divider />
-                       <div  style={{paddingTop:'20px'}}>
-                             
-                             <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Mini Meal</div>
-                             
-                             <div style={{float:'right'}}>
-                                 <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
-                                                     <div style={{color:'#60b246',fontSize:'14px',textAlign:'center'}}>ADD</div> 
-                                 </button>
-                             </div>
-                             <br />
-                             <div style={{fontSize:'13px',color:'#7e808c',paddingLeft:'20px'}}>&nbsp;Rice + sambar + rasam +poriyal</div>
-                             <div style={{fontSize:'15px',color:'#535665',paddingLeft:'20px'}}>&nbsp;₹ 50</div>
-                       </div>
-                       <Divider />
-                       <div  style={{padding:'20px 0px'}}>
-                             
-                             <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Veg meal with curd</div>
-                             
-                             <div style={{float:'right'}}>
-                                 <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
-                                                     <div style={{color:'#60b246',fontSize:'14px',textAlign:'center'}}>ADD</div> 
-                                 </button>
-                             </div>
-                             <br />
-                             <div style={{fontSize:'13px',color:'#7e808c',paddingLeft:'20px'}}>&nbsp;Rice + sambar + rasam +poriyal</div>
-                             <div style={{fontSize:'15px',color:'#535665',paddingLeft:'20px'}}>&nbsp;₹ 100</div>
-                             
-
-                       </div>
-                    </div>
-
-
-                    <div id="13" style={{padding:'20px 0px',borderBottom:'2px solid black',paddinTop:'20px'}}>
-                        <div style={{fontSize:'32px',fontWeight:'600'}}>Quick bits</div>
-                        <div style={{color:'#686b78',fontSize:'13px',fontWeight:'500'}}>4 ITEM</div>
-                        <div  style={{paddingTop:'20px'}}>
-                             
-                             <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Omlete</div>
-                             
-                             <div style={{float:'right'}}>
-                                 <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
-                                                     <div style={{color:'#60b246',fontSize:'14px',textAlign:'center'}}>ADD</div> 
-                                 </button>
-                             </div>
-                             <br />
-                             <div style={{fontSize:'15px',color:'#535665',paddingLeft:'20px'}}>&nbsp;₹ 50</div>
-                       </div>
-                       <Divider />
-                       <div  style={{paddingTop:'20px'}}>
-                             
-                             <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Masala Omlete</div>
-                             
-                             <div style={{float:'right'}}>
-                                 <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
-                                                     <div style={{color:'#60b246',fontSize:'14px',textAlign:'center'}}>ADD</div> 
-                                 </button>
-                             </div>
-                             <br />
-                             <div style={{fontSize:'15px',color:'#535665',paddingLeft:'20px'}}>&nbsp;₹ 100</div>
-
-                       </div>
-                       <Divider />
-                       <div  style={{paddingTop:'20px'}}>
-                             
-                             <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Omlete</div>
-                             
-                             <div style={{float:'right'}}>
-                                 <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
-                                                     <div style={{color:'#60b246',fontSize:'14px',textAlign:'center'}}>ADD</div> 
-                                 </button>
-                             </div>
-                             <br />
-                             <div style={{fontSize:'15px',color:'#535665',paddingLeft:'20px'}}>&nbsp;₹ 50</div>
-                       </div>
-                       <Divider />
-                       <div  style={{paddingTop:'20px'}}>
-                             
-                             <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Masala Omlete</div>
-                             
-                             <div style={{float:'right'}}>
-                                 <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
-                                                     <div style={{color:'#60b246',fontSize:'14px',textAlign:'center'}}>ADD</div> 
-                                 </button>
-                             </div>
-                             <br />
-                             <div style={{fontSize:'15px',color:'#535665',paddingLeft:'20px'}}>&nbsp;₹ 100</div>
-
-                       </div>
-                       <Divider />
-                       <div  style={{paddingTop:'20px'}}>
-                             
-                             <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; Omlete</div>
-                             
-                             <div style={{float:'right'}}>
-                                 <button disabled style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
-                                                     <div style={{color:'#60b246',fontSize:'14px',textAlign:'center'}}>ADD</div> 
-                                 </button>
-                             </div>
-                             <br />
-                             <div style={{fontSize:'15px',color:'#535665',paddingLeft:'20px'}}>&nbsp;₹ 50</div>
-                       </div>
-
-                    </div> */}
+                         )})}   
                 </Col>
                 <Col span={7} style={{padding:'40px 40px',position:'sticky',top:'50px'}}>
                    <div style={{fontSize:'32px',fontWeight:'600'}}>Cart</div>
@@ -309,9 +172,7 @@ export class MidRestaurant extends Component {
                                     </Col>
                                     <Col span={6} >
                                         <div style={{borderStyle:'solid',borderWidth:'1px',borderColor:'#60b246',textAlign:'center'}}>&nbsp;-&nbsp;&nbsp;1&nbsp;&nbsp;+&nbsp;</div>
-                                    </Col>
-                                    {/* <div style={{borderStyle:'dashed',borderWidth:'1px',height:'20px'}}> */}
-                                    
+                                    </Col>                                    
                                     
                                </div>
                     </Row>

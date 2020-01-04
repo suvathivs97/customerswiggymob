@@ -32,10 +32,12 @@ export class Head extends Component {
             login:false,
             loginPlace:'right',
             OtpLogin:false,
-            phoneno:'',otp:'',
+            phoneno:'',otp:'',mail:'',
             signUp:false,
             orders:true,
-            verify:false };
+            verify:false,
+            submitname:'SEND OTP',
+            disphone:false };
 
 
 componentDidMount=async()=>{
@@ -65,7 +67,11 @@ componentDidMount=async()=>{
 
   //Login
   loginDrawer=async()=>{
-    await this.setState({login:true,LoginOrOtp:true})
+    if(!this.state.orders){
+      await this.setState({login:true,LoginOrOtp:true})
+    }else{
+      window.location.href='/Profilemainpage/profile'
+    }
   }
   CloseLoginDrawer=async()=>{
     await this.setState({login:false})
@@ -76,7 +82,7 @@ componentDidMount=async()=>{
       console.log(res,"response")
       if(res.data.success){
         message.success(res.data.message)
-        await this.setState({OtpLogin:true,LoginOrOtp:false})
+        await this.setState({OtpLogin:true,LoginOrOtp:false,disphone:true})
       }else{
         message.error(res.data.message)
       }
@@ -99,6 +105,7 @@ componentDidMount=async()=>{
       if(res.data.success){
         localStorage.setItem('id',res.data.name)
         await this.setState({login:false,OtpLogin:false})
+        message.success('Successfully login in')
       }else{
         message.error(res.data.message) 
       }
@@ -115,10 +122,35 @@ componentDidMount=async()=>{
   CloseSignUpDrawer=()=>{
     this.setState({signUp:false,login:false,OtpLogin:false})
   }
-  signupSubmit=async()=>{
-    
-    this.setState({signUp:false,login:false,OtpLogin:false})
-    localStorage.setItem('id','123456')
+  signupSubmit=async(data)=>{
+        if(data == 'send'){
+          if(this.state.phoneno != ''){
+              let res=await axios.post(port+'/sendOTPSignup',{phoneno:this.state.phoneno})
+              console.log(res,"signupres")
+              if(res.data.success){
+                  message.success(res.data.message)
+                  await this.setState({verify:true,submitname:'CONTINUE'})
+              }else{
+                  message.error(res.data.message)
+              }
+          }else{
+            message.error('Please enter the required parameters')
+          }
+        }else if(data == 'cont'){
+          if(this.state.phoneno != '' && this.state.otp != '' && this.state.name != '' && this.state.mail != ''){
+            let res=await axios.post(port+'/verifyOTPSignup',{phoneno:this.state.phoneno,otp:this.state.otp,name:this.state.name,mail:this.state.mail})
+            console.log(res,'res for verifyOTPSignup')
+            if(res.data.success){
+                  message.success('Successfully signed up')
+                  localStorage.setItem('id',res.data.customer)
+                  await this.setState({signUp:false,login:false,OtpLogin:false,phoneno:'',otp:'',name:'',mail:''})
+            }else{
+                  message.error(res.data.message)
+            }
+          }else{
+             message.error('Please enter the required parameters')
+          }
+        }
   }
   GoTologinDrawer=async()=>{
     await this.setState({login:true,LoginOrOtp:true,signUp:false})
@@ -284,6 +316,7 @@ componentDidMount=async()=>{
                                              style={{padding:'15px',width:'100%'}}
                                              value={this.state.phoneno}
                                              onChange={e=>this.setState({phoneno:e.target.value})}
+                                             disabled={this.state.disphone == true}
                                       >
                                       </input>
                                     </div>
@@ -321,29 +354,37 @@ componentDidMount=async()=>{
                                           </Col>
                                       </div>
                                       <div style={{marginTop:'20px'}}>
-                                        
-                                        <input placeholder="Phone Number"
-                                              style={{padding:'15px',width:'100%'}}
-                                              value={this.state.phoneno}
-                                              onChange={e=>this.setState({phoneno:e.target.value})}
-                                        >
-                                        </input>
+                                        {this.state.verify == false?
+                                          <input placeholder="Phone Number"
+                                                 style={{padding:'15px',width:'100%'}}
+                                                 value={this.state.phoneno}
+                                                 onChange={e=>this.setState({phoneno:e.target.value})}
+                                          >
+                                          </input>
+                                          :
+                                          <input placeholder="Enter OTP"
+                                                 style={{padding:'15px',width:'100%'}}
+                                                 value={this.state.otp}
+                                                 onChange={e=>this.setState({otp:e.target.value})}
+                                          >
+                                          </input>
+                                        }
                                       </div>
                                       <div style={{marginTop:'20px'}}>
                                           <input placeholder="Name"
                                                 style={{padding:'15px',width:'100%'}}
                                                 value={this.state.name}
                                                 onChange={e=>this.setState({name:e.target.value})}
-                                                disabled={!this.state.verify}
+                                                disabled={this.state.verify == false}
                                           >
                                           </input>
                                       </div>
                                       <div style={{marginTop:'20px'}}>
                                           <input placeholder="Email"
                                                 style={{padding:'15px',width:'100%'}}
-                                                value={this.state.email}
-                                                onChange={e=>this.setState({email:e.target.value})}
-                                                disabled={!this.state.verify}
+                                                value={this.state.mail}
+                                                onChange={e=>this.setState({mail:e.target.value})}
+                                                disabled={this.state.verify == false}
                                           >
                                           </input>
                                       </div>
@@ -352,13 +393,22 @@ componentDidMount=async()=>{
                                                 style={{padding:'15px',width:'100%'}}
                                                 value={this.state.password}
                                                 onChange={e=>this.setState({password:e.target.value})}
-                                                disabled={!this.state.verify}
+                                                disabled={this.state.verify == false}
                                           >
                                           </input>
                                       </div>
-                                      <div style={{marginTop:'20px'}}>
-                                          <button style={{backgroundColor:'#fc8019',border:'none',textAlign:'center',width:'100%',padding:'10px'}} onClick={this.signupSubmit}>CONTINUE</button>
+                                      <div>
+                                        {this.state.submitname == 'SEND OTP'?
+                                        <div style={{marginTop:'20px'}}>
+                                            <button style={{backgroundColor:'#fc8019',border:'none',textAlign:'center',width:'100%',padding:'10px'}} onClick={e=>this.signupSubmit('send')}>{this.state.submitname}</button>
+                                        </div>
+                                        :
+                                        <div style={{marginTop:'20px'}}>
+                                            <button style={{backgroundColor:'#fc8019',border:'none',textAlign:'center',width:'100%',padding:'10px'}} onClick={e=>this.signupSubmit('cont')}>{this.state.submitname}</button>
+                                        </div>
+                                        }
                                       </div>
+
                                     </div>
                                 </Drawer>
                             </div>

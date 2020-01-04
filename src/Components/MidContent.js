@@ -183,7 +183,7 @@ export class MidContent extends Component {
                               if(i<3){
                                return(
                                 <div class="col-6 col-sm-4 col-lg-4" style={{paddingBottom:'30px'}}>
-                                   <Link to={"/Pestcontrol/" + p.restaurant_id + '/' + p.address + '/' + p.city + '/' + p.name + '/' + p.image} style={{textDecoration:'none'}}>
+                                   <Link to={"/SingleRestaurant/" + p.restaurant_id + '/' + p.address + '/' + p.city + '/' + p.name + '/' + p.image} style={{textDecoration:'none'}}>
                                    <div class="card" style={{width: '250px'}}>
                                         <img class="card-img-top" src={port+`/image/restaurants/${p.image}`} height="150px" width="150px" alt=""/>
                                         <div class="card-body">
@@ -220,7 +220,7 @@ export class MidContent extends Component {
                                     if(i<3){
                                     return(
                                 <div class="col-6 col-sm-4 col-lg-4" style={{paddingBottom:'30px'}}>
-                                  <Link to={"/Pestcontrol/" + p.restaurant_id + '/' + p.address + '/' + p.city + '/' + p.name + '/' + p.image} style={{textDecoration:'none'}}>
+                                  <Link to={"/SingleRestaurant/" + p.restaurant_id + '/' + p.address + '/' + p.city + '/' + p.name + '/' + p.image} style={{textDecoration:'none'}}>
                                    <div class="card" style={{width: '250px'}}>
                                         <img class="card-img-top" src={port+`/image/restaurants/${p.image}`} height="150px" width="150px" alt=""/>
                                         <div class="card-body">
@@ -257,7 +257,7 @@ export class MidContent extends Component {
                                     if(i<3){
                                     return(
                                 <div class="col-6 col-sm-4 col-lg-4" style={{paddingBottom:'30px'}}>
-                                 <Link to={"/Pestcontrol/" + p.restaurant_id + '/' + p.address + '/' + p.city + '/' + p.name + '/' + p.image} style={{textDecoration:'none'}}>
+                                 <Link to={"/SingleRestaurant/" + p.restaurant_id + '/' + p.address + '/' + p.city + '/' + p.name + '/' + p.image} style={{textDecoration:'none'}}>
                                    <div class="card" style={{width: '250px'}}>
                                         <img class="card-img-top" src={port+`/image/restaurants/${p.image}`} height="150px" width="150px" alt=""/>
                                         <div class="card-body">

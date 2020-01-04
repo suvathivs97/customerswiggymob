@@ -25,7 +25,7 @@ export class SingleRestaurant extends Component {
           let res=await axios.get(port+`/getFoodItems?restaurantId=${this.match.params.id}&customerId=5df9de26dc412609dcb686d3`)
           console.log(res,'res for get one res')
           if(res.data.success){
-            await this.setState({address:this.match.params.address,city:this.match.params.city,FoodItem:res.data.items,restaurant:this.match.params.restaurant,image:this.match.params.image})
+              await this.setState({address:this.match.params.address,city:this.match.params.city,FoodItem:res.data.items,restaurant:this.match.params.restaurant,image:this.match.params.image})
           }
           else{
               console.log('getFoodItems error')
