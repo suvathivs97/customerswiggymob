@@ -7,6 +7,7 @@ export class Location extends Component {
     render() {
         return (
             <div>
+            <div className="webview">
                 <Drawer
                     title="Basic Drawer"
                     placement={this.state.placement}
@@ -18,6 +19,7 @@ export class Location extends Component {
                     <p>Some contents...</p>
                     <p>Some contents...</p>
                  </Drawer>
+            </div>
             </div>
         )
     }

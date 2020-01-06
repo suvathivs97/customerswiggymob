@@ -18,7 +18,8 @@ import {
   const { Header } = Layout;
 
 export class Head extends Component {
-  state = { visible: false, placement: 'left' };
+  state = {  placement: 'left',webview:true,
+  visible: false };
  
   showDrawer = () => {
     this.setState({
@@ -40,10 +41,25 @@ export class Head extends Component {
   closeDrawer=async()=>{
       await this.setState({visible:false})
   }
+
+  componentDidMount= async()=>{
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    console.log(isMobile,"mobilee")
+    if(isMobile){
+    await this.setState({webview:false})
+    }
+    else{
+    await this.setState({webview:true})
+    }
+    }
+
     render() {
+      console.log('web view',this.state.webview)
         return (
-            <div>
-              <Layout className="layout">
+          <div>
+            {this.state.webview?
+            <div className="webview">
+              {/* <Layout className="layout"> */}
                 <Header className="heading">
                     <Row>
                     <div className="row" style={{padding:'10px 10px 10px 10px'}}>
@@ -162,7 +178,32 @@ export class Head extends Component {
                             </Menu.Item>
                     </Menu> */}
                 </Header>
-              </Layout>
+              {/* </Layout> */}
+            </div>
+              :
+            <div className='mobview'>
+              
+              
+                <header  style={{
+                  padding:'10px 0 0 10px',alignItems: 'center', borderBottom: '1px solid #e9e9eb'
+                }}>
+                  <Row>
+                <Col span={12}>
+                  <a href="/MobLocation" style={{fontSize:'12px',
+                  fontWeight: "600",color:'black',textDecoration:'none'}}>Others</a>
+                    <div style={{fontSize:'10px'}}>Coimbatore,Tamilnadu</div>
+                  </Col>
+                  
+                  <Col span={12}>
+                  <a href='/Moboffers' style={{fontSize:'12px',paddingRight:'10px',color:'black',textDecoration:'none',float:'right'}}>
+                    <img style={{height:'25px'}} src='/img/service.png'/> Offers</a>
+                    </Col>
+                    </Row>
+                 
+                </header>
+              
+            </div>
+             }
             </div>
         )
     }

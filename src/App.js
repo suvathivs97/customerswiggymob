@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
 import "./App.css";
 import "antd/dist/antd.css";
-import 'bootstrap/dist/css/bootstrap.min.css';import { BrowserRouter, Route, Switch } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Mainpage from './Components/MainPage'
 import SingleRestaurant from './Components/SingleRestaurant'
 import CartPage from './Components/CartPage'
 import Location from './Components/Location'
+import MobLocation from './Components/MobLocation'
+import Moboffers from'./Components/Moboffers'
+import MobCart from'./Components/MobCart'
+import { Card } from 'antd';
  class App extends Component {
   render() {
     return (
@@ -15,6 +20,10 @@ import Location from './Components/Location'
            <Route path="/SingleRestaurant" component={SingleRestaurant} />
            <Route path="/CartPage" component={CartPage} />
            <Route path="/Location" component={Location} />
+           <Route path='/MobLocation' component ={MobLocation}/>
+           <Route path='/Moboffers' component={Moboffers}/>
+           <Route path='/MobCart' component={MobCart}/>
+       
         </Switch>
       </BrowserRouter>
     )

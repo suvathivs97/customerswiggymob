@@ -51,7 +51,8 @@ export class AllRestaurants extends Component {
     render() {
 
         return (
-            <div style={{padding:'30px'}}>
+            <div>
+            <div className="webview"style={{padding:'30px'}}>
                 <Card>
                     <div><h4 style={{textAlign:'center'}}>All Restaurants</h4></div>
                     <div style={{paddingTop:'20px'}}>
@@ -85,6 +86,8 @@ export class AllRestaurants extends Component {
                       </div>
                     </div>
                 </Card>
+            </div>
+           
             </div>
         )
     }
