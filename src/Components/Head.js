@@ -103,7 +103,7 @@ componentDidMount=async()=>{
     if(this.state.otp != ''){
       const res=await axios.post(port+'/verifyOTPLogin',{otp:this.state.otp,phoneno:this.state.phoneno})
       if(res.data.success){
-        localStorage.setItem('id',res.data.name)
+        localStorage.setItem('id',res.data.customerId)
         await this.setState({login:false,OtpLogin:false})
         message.success('Successfully login in')
       }else{
@@ -142,7 +142,7 @@ componentDidMount=async()=>{
             console.log(res,'res for verifyOTPSignup')
             if(res.data.success){
                   message.success('Successfully signed up')
-                  localStorage.setItem('id',res.data.customer)
+                  localStorage.setItem('id',res.data.customerId)
                   await this.setState({signUp:false,login:false,OtpLogin:false,phoneno:'',otp:'',name:'',mail:''})
             }else{
                   message.error(res.data.message)

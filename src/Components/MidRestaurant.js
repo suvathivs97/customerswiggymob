@@ -3,11 +3,17 @@ import {Col,Row,Icon,Divider, Button} from 'antd'
 import Scrollspy from 'react-scrollspy'
 import axios from 'axios'
 import port from '../port'
+import Addtocart from './Addtocart';
+import { relativeTimeThreshold } from 'moment';
 export class MidRestaurant extends Component {
     state={
         categories:[],
         obj:[],
-        fooddata:[]
+        fooddata:[],
+        addQuant:false,
+        viewCart:[],
+        cartlength:0,
+        load:false
     }
     componentDidMount=async()=>{
 
@@ -36,20 +42,21 @@ export class MidRestaurant extends Component {
              }
              
          ]
-
-        //  document.getElementById('recom').style.color = "white";
-        //  document.getElementById('recom').style.backgroundColor = "#e46d47";
-        //  await this.setState({categories:this.props.FoodItem})
-        let res=await axios.get(port+`/getFoodItems?restaurantId=${this.props.id}&customerId=5df9de26dc412609dcb686d3`)
-        console.log(res,"response in mid")
-        await this.setState({fooddata:res.data.items})
+        let custid=localStorage.getItem('id')
+        let res
+        if(custid != undefined && custid != null){
+            res=await axios.get(port+`/getFoodItems?restaurantId=${this.props.id}&customerId=${custid}`)
+            await this.setState({fooddata:res.data.items})
+        }else{
+            res=await axios.get(port+`/getFoodItems?restaurantId=${this.props.id}`)
+            await this.setState({fooddata:res.data.items})
+        }
+      
         let food=[]
-        console.log(this.state.fooddata,"food1")
 
         for(let i=0;i<this.state.fooddata.length;i++){
             food.push(this.state.fooddata[i].category_name)
         }
-        console.log(food,"food")
         let outputArray = []; 
         let count = 0; 
         let start = false; 
@@ -67,16 +74,58 @@ export class MidRestaurant extends Component {
             start = false; 
             count = 0; 
         }
-        console.log(outputArray,"outjhhg")
         let categories=this.state.categories
         categories.push("Recommended")
         for(let i=0;i<outputArray.length;i++){
             categories.push(outputArray[i])
         }
         await this.setState({categories,obj})
-        console.log(this.state.categories,"categories")
-          
+        let customer_id=localStorage.getItem('id')
+        if(customer_id != undefined && customer_id != null){
+            let viewCart=await axios.get(port+`/viewCart?customerId=${customer_id}`)
+            console.log(viewCart,"viewcart")
+            await this.setState({viewCart:viewCart.data.cart,length:viewCart.data.cart.length,load:true})
+            
+        }
        }
+
+       calculatetotal=()=>{
+            console.log('inside calculate total')
+            let sum=0
+                // let viewCart=await axios.get(port+`/viewCart?customerId=${customer_id}`)
+                let cart=this.state.viewCart
+                let price = cart.map(p=>p.price)
+                for (let i=0;i<cart.length;i++){
+                    sum=Number(sum) + Number(price[i])
+                }
+             console.log(sum,"sum")
+             return sum
+       }
+
+       refreshcart=async()=>{
+           let customer_id=localStorage.getItem('id')
+            if(customer_id != undefined && customer_id != null){
+                let viewCart=await axios.get(port+`/viewCart?customerId=${customer_id}`)
+                await this.setState({viewCart:viewCart.data.cart,length:viewCart.data.cart.length,load:true})
+            }
+
+       }
+
+       decreament=(e,item)=>{
+           e.stopPropagation()
+           console.log('inside decrement function')
+           let sum=item.price-item.price/item.quantity
+           console.log(sum,"sum")
+
+       }
+       increament=(e,item)=>{
+          e.stopPropagation()
+          console.log('inside increment function')
+          let sum=item.price+(item.price/item.quantity)
+          console.log(sum,"sum")
+           
+       }
+
 
 
        
@@ -112,8 +161,8 @@ export class MidRestaurant extends Component {
                                              <div style={{float:'left',fontSize:'15px',color:'#535665'}}>
                                              ₹ 400
                                              </div>
-                                             <button style={{backgroundColor:'#fff',borderWidth:'1px',float:'right',height:'30px',width:'70px'}}>
-                                                 <div style={{color:'#60b246',fontSize:'14px',textAlign:'center'}}>ADD</div> 
+                                             <button style={{backgroundColor:'#fff',borderWidth:'1px',float:'right',height:'30px',width:'70px',color:'#60b246',fontSize:'14px',textAlign:'center'}} >
+                                                 ADD
                                              </button>
                                            </Row>
                                      </div>
@@ -132,57 +181,61 @@ export class MidRestaurant extends Component {
                           </div>
                           }
                         {this.state.fooddata.filter(q=>q.category_name==p).map(r=>{return(
-                          <div>
-                          <div style={{paddingTop:'20px'}}>
-                               
-                               <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; {r.name}</div>
-                               
-                               <div style={{float:'right'}}>
-                                   <button style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px'}}>
-                                                       <div style={{color:'#60b246',fontSize:'14px',textAlign:'center'}}>ADD</div> 
-                                   </button>
-                               </div>
-                               <br />
-                               {r.description?
-                               <div style={{fontSize:'13px',color:'#7e808c',paddingLeft:'20px'}}>&nbsp;{r.description}</div>
-                               :
-                               <div />
-                               }
-                               <div style={{fontSize:'15px',color:'#535665',paddingLeft:'20px'}}>&nbsp;₹ {r.price}</div>
-                         </div>
-                         {p == 'Recommended'?
-                           <div></div>:
-                             <Divider />}  
-                            </div>
+                        <div>
+                            <Addtocart p={p} item={r} refreshcart={this.refreshcart}/>
+                        </div>
                          )})}
                          </div>
                          )})}   
                 </Col>
                 <Col span={7} style={{padding:'40px 40px',position:'sticky',top:'50px'}}>
-                   <div style={{fontSize:'32px',fontWeight:'600'}}>Cart</div>
-                   <div style={{fontSize:'14px',fontWeight:'300',color:'282c3f'}}>from Subway</div>
-                   <div style={{fontSize:'13px',color:'#686b78',fontWeight:'500'}}>1 ITEM</div>
-                   <Row>
-                                <div  style={{paddingTop:'20px'}}>
-                                    <Col span={3} style={{width:'30px',height:'40px'}}>
-                                    <img src="/img/vegIcon.png" style={{height:'10px',width:'10px'}} />
-                                    </Col>
-                                    <Col span={14} style={{maxwidth:'130px',height:'40px',display:'flex',fontWeight:'400',fontSize:'14px'}}>
-                                    Aloo Patty Sub ( 15 cm, 6 Inch )
-                                    </Col>
-                                    <Col span={6} >
-                                        <div style={{borderStyle:'solid',borderWidth:'1px',borderColor:'#60b246',textAlign:'center'}}>&nbsp;-&nbsp;&nbsp;1&nbsp;&nbsp;+&nbsp;</div>
-                                    </Col>                                    
-                                    
-                               </div>
+                {this.state.length != 0?
+                    <div>
+                    {this.state.load?
+                    <div>
+                    <div style={{fontSize:'32px',fontWeight:'600'}}>Cart</div>
+                    <div style={{fontSize:'14px',fontWeight:'300',color:'282c3f'}}>from Subway</div>
+                    <div style={{fontSize:'13px',color:'#686b78',fontWeight:'500'}}>{this.state.length} ITEM</div>
+                    {this.state.viewCart.map(p=>
+                    {return(
+                    <Row>
+                                    <div  style={{paddingTop:'20px'}}>
+                                        <Col span={3} style={{width:'30px',height:'40px'}}>
+                                        <img src="/img/vegIcon.png" style={{height:'10px',width:'10px'}} />
+                                        </Col>
+                                        <Col span={10} style={{maxwidth:'130px',height:'40px',display:'flex',fontWeight:'400',fontSize:'14px'}}>
+                                        {p.item_name}
+                                        </Col>
+                                        <Col span={6} >
+                                            <div style={{borderStyle:'solid',borderWidth:'1px',borderColor:'#60b246',textAlign:'center'}}>
+                                                <text style={{margin:'0px 10px'}} onClick={e=>this.decreament(p)}>-</text>{p.quantity}
+                                                <text style={{margin:'0px 10px'}} onClick={e=>this.increament(p)}>+</text>
+                                            </div>
+                                        </Col>   
+                                        <Col span={4} style={{fontSize:'13px',color:'rgb(104, 107, 120)',marginLeft:'3%'}}>
+                                          ₹ {p.price}
+                                        </Col>                                 
+                                </div>
                     </Row>
-                   <Row style={{paddingTop:'20px'}}>
-                     <div style={{color:'#3d4152',fontSize:'17px',fontWeight:'600',float:'left'}}>Subtotal</div>
-                     <div style={{float:'right',fontSize:'15px'}}>₹ 250</div>
-                     <div style={{float:'right',textDecoration:'line-through',color:'#bebfc5',marginRight:'10px',fontSize:'15px'}}>₹ 350</div>
-                   </Row>
-                   <div style={{color:'#7e808c',fontSize:'13px',fontWeight:'300'}}>Extra charges may apply</div>
-                   <div><Button style={{backgroundColor:'#60b246',border:'none',fontSize:'16px',fontWeight:'600',width:'100%',textAlign:'center',color:'#fff',marginTop:'20px'}}>Checkout </Button></div>
+                    )})}
+                    <Row style={{paddingTop:'20px'}}>
+                        <div style={{color:'#3d4152',fontSize:'17px',fontWeight:'600',float:'left'}}>Subtotal</div>
+                        <div style={{float:'right',fontSize:'15px'}}>₹ {this.calculatetotal()}</div>
+                        <div style={{float:'right',textDecoration:'line-through',color:'#bebfc5',marginRight:'10px',fontSize:'15px'}}>₹ 350</div>
+                    </Row>
+                    <div style={{color:'#7e808c',fontSize:'13px',fontWeight:'300'}}>Extra charges may apply</div>
+                    <div><Button style={{backgroundColor:'#60b246',border:'none',fontSize:'16px',fontWeight:'600',width:'100%',textAlign:'center',color:'#fff',marginTop:'20px'}}>Checkout </Button></div>
+                    </div>
+                    :
+                    <div></div>
+                    }
+                    </div>
+                    :
+                    <div>
+                    <div style={{fontSize:'32px',fontWeight:'600'}}>Cart Empty</div>
+                    <img src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_480/Cart_empty_-_menu_2x_ejjkf2" alt="" width="250px" height="200px" style={{opacity:0.5,marginTop:'20px'}}></img>
+                    </div>
+                }
                 </Col>
             </Row>
          </div>
