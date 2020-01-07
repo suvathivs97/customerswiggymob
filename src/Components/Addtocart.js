@@ -43,35 +43,19 @@ export class Addtocart extends Component {
     }
 
     decreament=async(item)=>{
-        console.log('inside decrement function')
-        let sum=Number(item.price)-Number(item.price/item.quantity)
-        console.log(sum,"sum")
-        let quantity=Number(item.quantity)-1
-        let customerId=localStorage.getItem('id')
-        if(customerId != undefined && customerId != null){
-            let res=await axios.post(port+'/updateCart',{customerId,itemId:item.item_id,quantity,price:sum})
-            console.log(res,"response for updatecart")
-        }
+        this.props.decreament(item)
     }
     increament=async(item)=>{
-       console.log('inside increment function')
-       let sum=Number(item.price)+Number(item.price/item.quantity)
-       console.log(sum,"sum")
-       let quantity=Number(item.quantity)+1
-       let customerId=localStorage.getItem('id')
-       if(customerId != undefined && customerId != null){
-           let res=await axios.post(port+'/updateCart',{customerId,itemId:item.item_id,quantity,price:sum})
-           console.log(res,"response for updatecart")
-       }
-        
+       this.props.increament(item)
     }
+
+    
 
     render() {
         return (
             <div>
                 <div>
                           <div style={{paddingTop:'20px'}}>
-                               
                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; {this.props.item.name}</div>
                                <div style={{float:'right'}}>
                                    {this.state.addQuant == false ?
@@ -81,7 +65,7 @@ export class Addtocart extends Component {
                                    :
                                    <div style={{borderStyle:'solid',borderWidth:'1px',borderColor:'#60b246',textAlign:'center'}}>
                                        <text style={{margin:'0px 15px',cursor:'pointer'}} onClick={e=>this.decreament(this.props.item)}>-</text>
-                                            {this.props.item.quantity == 0?this.state.quantity:this.props.item.quantity}
+                                            {this.props.item.quantity == 0 ?this.state.quantity:this.props.item.quantity}
                                        <text style={{margin:'0px 15px',cursor:'pointer'}} onClick={e=>this.increament(this.props.item)}>+</text></div>
                                    }
                                </div>

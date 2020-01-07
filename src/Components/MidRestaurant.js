@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import {Col,Row,Icon,Divider, Button} from 'antd'
+import {Col,Row,Icon,Divider, Button, message} from 'antd'
 import Scrollspy from 'react-scrollspy'
 import axios from 'axios'
 import port from '../port'
 import Addtocart from './Addtocart';
 import { relativeTimeThreshold } from 'moment';
+import RestaurantCard from './RestaurantCard';
 export class MidRestaurant extends Component {
     state={
         categories:[],
@@ -95,8 +96,9 @@ export class MidRestaurant extends Component {
                 // let viewCart=await axios.get(port+`/viewCart?customerId=${customer_id}`)
                 let cart=this.state.viewCart
                 let price = cart.map(p=>p.price)
+                let quantity = cart.map(p=>p.quantity)
                 for (let i=0;i<cart.length;i++){
-                    sum=Number(sum) + Number(price[i])
+                    sum=Number(sum) + Number(price[i] * quantity[i])
                 }
              console.log(sum,"sum")
              return sum
@@ -111,20 +113,55 @@ export class MidRestaurant extends Component {
 
        }
 
-       decreament=(e,item)=>{
-           e.stopPropagation()
-           console.log('inside decrement function')
-           let sum=item.price-item.price/item.quantity
-           console.log(sum,"sum")
+       decreament=async(item)=>{
+        console.log('inside decrement function',item)
+        // let sum=Number(item.price)-Number(item.price/item.quantity)
+        // console.log(sum,"sum")
+        let quantity=Number(item.quantity)-1
+            let customerId=localStorage.getItem('id')
+            if(customerId != undefined && customerId != null){
+                if(quantity >0){
+                    let res=await axios.post(port+'/updateCart',{customerId,itemId:item.item_id,quantity})
+                    console.log(res,"response for updatecart")
+                    if(res.data.success){
+                        let viewCart=await axios.get(port+`/viewCart?customerId=${customerId}`)
+                        let res=await axios.get(port+`/getFoodItems?restaurantId=${this.props.id}&customerId=${customerId}`)
+                        await this.setState({viewCart:viewCart.data.cart,fooddata:res.data.items})
+                    }else{
+                        message.error(res.data.message)
+                    }
+                }else{
+                    let removecart=await axios.post(port+'/removeCart',{customerId,itemId:item.item_id,restaurantId:item.restaurant_id})
+                    if(removecart.data.success){
+                        let viewCart=await axios.get(port+`/viewCart?customerId=${customerId}`)
+                        let res=await axios.get(port+`/getFoodItems?restaurantId=${this.props.id}&customerId=${customerId}`)
+                        await this.setState({viewCart:viewCart.data.cart,fooddata:res.data.items})
+                    }
+        
+                }
+            }
+        }
+    increament=async(item)=>{
+       console.log('inside increment function',item)
+       let quantity=Number(item.quantity)+1
+       let customerId=localStorage.getItem('id')
+       if(customerId != undefined && customerId != null){
+           let res=await axios.post(port+'/updateCart',{customerId,itemId:item.item_id,quantity})
+           console.log(res,"response for updatecart")
+           if(res.data.success){
+                let viewCart=await axios.get(port+`/viewCart?customerId=${customerId}`)
+                let res=await axios.get(port+`/getFoodItems?restaurantId=${this.props.id}&customerId=${customerId}`)
+                await this.setState({viewCart:viewCart.data.cart,fooddata:res.data.items})
+           }else{
+            message.error(res.data.message)
+           }
+       }
+        
+    }
 
-       }
-       increament=(e,item)=>{
-          e.stopPropagation()
-          console.log('inside increment function')
-          let sum=item.price+(item.price/item.quantity)
-          console.log(sum,"sum")
-           
-       }
+    checkout=()=>{
+        window.location.href='/CartPage'
+    }
 
 
 
@@ -137,7 +174,7 @@ export class MidRestaurant extends Component {
                 <Col span={6} style={{padding:'40px 0px',position:'sticky',top:'50px'}}>
                     <div style={{display:'flex',float:'right'}}>
                      <div style={{height:'300px',paddingRight:'35px'}}>
-                     <Scrollspy items={ this.state.categories} currentClassName="currentres" style={{marginLeft:'-40px'}}>
+                     <Scrollspy items={ this.state.categories } currentClassName="currentres" style={{marginLeft:'-40px'}}>
                          {this.state.categories.map(p=>{return(
                              <div><a href={p} id={p=='Recommended' ? 'recom':''} style={{textDecoration:'none',fontSize:'15px',fontWeight:'400',paddingTop:'5px',color:'black'}} >{p}</a></div>
                          )})}
@@ -182,7 +219,7 @@ export class MidRestaurant extends Component {
                           }
                         {this.state.fooddata.filter(q=>q.category_name==p).map(r=>{return(
                         <div>
-                            <Addtocart p={p} item={r} refreshcart={this.refreshcart}/>
+                            <Addtocart p={p} item={r} refreshcart={this.refreshcart} increament={this.increament} decreament={this.decreament}/>
                         </div>
                          )})}
                          </div>
@@ -198,33 +235,15 @@ export class MidRestaurant extends Component {
                     <div style={{fontSize:'13px',color:'#686b78',fontWeight:'500'}}>{this.state.length} ITEM</div>
                     {this.state.viewCart.map(p=>
                     {return(
-                    <Row>
-                                    <div  style={{paddingTop:'20px'}}>
-                                        <Col span={3} style={{width:'30px',height:'40px'}}>
-                                        <img src="/img/vegIcon.png" style={{height:'10px',width:'10px'}} />
-                                        </Col>
-                                        <Col span={10} style={{maxwidth:'130px',height:'40px',display:'flex',fontWeight:'400',fontSize:'14px'}}>
-                                        {p.item_name}
-                                        </Col>
-                                        <Col span={6} >
-                                            <div style={{borderStyle:'solid',borderWidth:'1px',borderColor:'#60b246',textAlign:'center'}}>
-                                                <text style={{margin:'0px 10px'}} onClick={e=>this.decreament(p)}>-</text>{p.quantity}
-                                                <text style={{margin:'0px 10px'}} onClick={e=>this.increament(p)}>+</text>
-                                            </div>
-                                        </Col>   
-                                        <Col span={4} style={{fontSize:'13px',color:'rgb(104, 107, 120)',marginLeft:'3%'}}>
-                                          ₹ {p.price}
-                                        </Col>                                 
-                                </div>
-                    </Row>
+                        <RestaurantCard item={p} increament={this.increament} decreament={this.decreament} />
                     )})}
                     <Row style={{paddingTop:'20px'}}>
                         <div style={{color:'#3d4152',fontSize:'17px',fontWeight:'600',float:'left'}}>Subtotal</div>
                         <div style={{float:'right',fontSize:'15px'}}>₹ {this.calculatetotal()}</div>
-                        <div style={{float:'right',textDecoration:'line-through',color:'#bebfc5',marginRight:'10px',fontSize:'15px'}}>₹ 350</div>
+                        {/* <div style={{float:'right',textDecoration:'line-through',color:'#bebfc5',marginRight:'10px',fontSize:'15px'}}>₹ 350</div> */}
                     </Row>
                     <div style={{color:'#7e808c',fontSize:'13px',fontWeight:'300'}}>Extra charges may apply</div>
-                    <div><Button style={{backgroundColor:'#60b246',border:'none',fontSize:'16px',fontWeight:'600',width:'100%',textAlign:'center',color:'#fff',marginTop:'20px'}}>Checkout </Button></div>
+                    <div><Button style={{backgroundColor:'#60b246',border:'none',fontSize:'16px',fontWeight:'600',width:'100%',textAlign:'center',color:'#fff',marginTop:'20px'}} onClick={this.checkout}>Checkout </Button></div>
                     </div>
                     :
                     <div></div>
@@ -235,7 +254,7 @@ export class MidRestaurant extends Component {
                     <div style={{fontSize:'32px',fontWeight:'600'}}>Cart Empty</div>
                     <img src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_480/Cart_empty_-_menu_2x_ejjkf2" alt="" width="250px" height="200px" style={{opacity:0.5,marginTop:'20px'}}></img>
                     </div>
-                }
+                 }
                 </Col>
             </Row>
          </div>

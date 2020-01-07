@@ -205,7 +205,7 @@ componentDidMount=async()=>{
                             </a>
                             <Drawer
                                 title={<Icon type="close" onClick={this.closeDrawer} />}
-                                // placement={this.state.placement}
+                                placement={this.state.placement}
                                 closable={false}
                                 onClose={this.onClose}
                                 visible={this.state.visible}

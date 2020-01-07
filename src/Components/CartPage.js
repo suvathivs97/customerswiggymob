@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
-import {Col,Row,Card,Layout,Collapse,Icon,Radio,Button,Divider} from 'antd'
+import {Col,Row,Card,Layout,Collapse,Icon,Radio,Button,Divider,message} from 'antd'
 import Head from './Head'
 import Bottom from './Bottom'
+import axios from 'axios'
+import port from '../port'
+import RestaurantCard from './RestaurantCard';
+import Addaddress from './Addaddress';
 const { Header,Footer,Content } = Layout;
 const { Panel } = Collapse;
 const customPanelStyle = {
@@ -22,14 +26,87 @@ const customPanelStyle = {
 export class CartPage extends Component {
     state = {
         openPanel: "1",
-        value:''
+        value:'',
+        viewCart:[],
+        restaurant_name:'',
+        viewaddress:false
       };
+
+      componentDidMount=async()=>{
+        let customerId=localStorage.getItem('id')
+        if(customerId != undefined && customerId != null){
+            let viewCart=await axios.get(port+`/viewCart?customerId=${customerId}`)
+            console.log(viewCart,"viewcart")
+            if(viewCart.data.success){
+                let cart=viewCart.data.cart
+                await this.setState({viewCart:cart})
+                if(cart[0]){
+                   await this.setState({restaurant_name:cart[0].restaurant_name,restaurant_address:cart[0].restaurant_address,restaurant_image:cart[0].restaurant_image})
+                }
+            }
+        }
+      }
+
       changepanel=()=>{
           this.setState({openPanel:'3'})
       }
       onChange=()=>{
 
       }
+
+      decreament=async(item)=>{
+        console.log('inside decrement function',item)
+        // let sum=Number(item.price)-Number(item.price/item.quantity)
+        // console.log(sum,"sum")
+        let quantity=Number(item.quantity)-1
+            let customerId=localStorage.getItem('id')
+            if(customerId != undefined && customerId != null){
+                if(quantity >0){
+                    let res=await axios.post(port+'/updateCart',{customerId,itemId:item.item_id,quantity})
+                    console.log(res,"response for updatecart")
+                    if(res.data.success){
+                        let viewCart=await axios.get(port+`/viewCart?customerId=${customerId}`)
+                        let res=await axios.get(port+`/getFoodItems?restaurantId=${this.props.id}&customerId=${customerId}`)
+                        await this.setState({viewCart:viewCart.data.cart,fooddata:res.data.items})
+                    }else{
+                        message.error(res.data.message)
+                    }
+                }else{
+                    let removecart=await axios.post(port+'/removeCart',{customerId,itemId:item.item_id,restaurantId:item.restaurant_id})
+                    if(removecart.data.success){
+                        let viewCart=await axios.get(port+`/viewCart?customerId=${customerId}`)
+                        await this.setState({viewCart:viewCart.data.cart})
+                    }
+        
+                }
+            }
+        }
+    increament=async(item)=>{
+       console.log('inside increment function',item)
+       let quantity=Number(item.quantity)+1
+       let customerId=localStorage.getItem('id')
+       if(customerId != undefined && customerId != null){
+           let res=await axios.post(port+'/updateCart',{customerId,itemId:item.item_id,quantity})
+           console.log(res,"response for updatecart")
+           if(res.data.success){
+                let viewCart=await axios.get(port+`/viewCart?customerId=${customerId}`)
+                await this.setState({viewCart:viewCart.data.cart})
+           }else{
+            message.error(res.data.message)
+           }
+       }
+        
+    }
+
+    addaddress=()=>{
+        console.log('addaddress')
+        this.setState({viewaddress:true})
+    }
+
+    viewadd=()=>{
+        this.setState({viewaddress:false})
+    }
+
     render() {
         return (
             <div >
@@ -96,8 +173,8 @@ export class CartPage extends Component {
                                     </Card>
                                 </div>
                                 <div class="col-6 col-sm-6 col-lg-6">
-                                  <Card style={{margin:'10px'}}> 
-                                      <Col span={2} style={{width:'20px',height:'180px'}}>
+                                  <Card style={{margin:'10px'}} onClick={this.addaddress}> 
+                                      <Col span={2} style={{width:'20px',height:'160px'}}>
                                           <Icon type="home" />
                                         </Col>
                                         <Col span={25}>
@@ -105,11 +182,16 @@ export class CartPage extends Component {
                                              Add New Address
                                             </div>
                                             <div style={{color:'#93959f',fontSize:'13px'}}>12, sara complex, Saravanampatti, Coimbatore, Tamil Nadu 641035, India</div>
-                                            <div style={{color:'#282c3f',marginTop:'30px',fontSize:'14px'}}>29 MINS</div>
-                                            <Button style={{borderColor:'#60b246',marginTop:'5px',fontSize:'16px',fontWeight:'600',textAlign:'center',color:'black'}}>Deliver Here</Button>
+                                            <Button style={{borderColor:'#60b246',marginTop:'5px',fontSize:'12px',fontWeight:'600',textAlign:'center',color:'#60b246',marginTop:'30px'}}>ADD NEW</Button>
                                         </Col>
-                                    </Card>
+                                   </Card>
                                 </div>
+                                {this.state.viewaddress?
+                                <div>
+                                    <Addaddress viewadd={this.viewadd}/>
+                                </div>:
+                                <div></div>
+                                }
                                 </div>
                                 {/* <Button style={{ fontSize: 12, color: "red", fontWeight: 600 }} onClick={this.addaddress}>
                                     <img src="/img/plus.png" />
@@ -121,39 +203,50 @@ export class CartPage extends Component {
                             </Panel>
                         </Collapse>
                     </Col>
+
+                    {/* CART */}
                     <Col span={8} style={{padding:'0px 30px',position:'sticky',top:'50px'}}>
                         <Card style={{backgrounColor:'#f7f7f7'}}>
                             <Row>
                                 <Col span={6}>
-                                  <img src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_100,h_100,c_fill/sgyqekgngxqekx1emwgz" height="50" width="50" />
+                                  <img src={port+`/image/restaurants/${this.state.restaurant_image}`} width="50px" height="50px"/>
                                 </Col>
                                 <Col span={17}>
                                     <Row span={2} style={{fontSize:'17px',color:'#282c3f'}}>
-                                        Subway
+                                        {this.state.restaurant_name}
                                     </Row>
                                     <Row span={2} style={{fontSize:'13px',color:'#686b78'}}>
-                                        Saravanampatti
+                                        {this.state.restaurant_address}
                                     </Row>
                                 </Col>
                             </Row>
                             <div style={{overflowY:'auto',maxHeight:'350px'}}>
-                                <Row>
-                                <div  style={{paddingTop:'20px'}}>
-                                    <Col span={3} style={{width:'30px',height:'40px'}}>
-                                    <img src="/img/vegIcon.png" style={{height:'10px',width:'10px'}} />
-                                    </Col>
-                                    <Col span={14} style={{maxwidth:'130px',height:'40px',display:'flex',fontWeight:'400',fontSize:'14px'}}>
-                                    Aloo Patty Sub ( 15 cm, 6 Inch )
-                                    </Col>
-                                    <Col span={6} >
-                                        <div style={{borderStyle:'solid',borderWidth:'1px',borderColor:'#60b246',textAlign:'center'}}>&nbsp;-&nbsp;&nbsp;1&nbsp;&nbsp;+&nbsp;</div>
-                                    </Col>
-                                    {/* <div style={{borderStyle:'dashed',borderWidth:'1px',height:'20px'}}> */}
-                                    
-                                    
-                               </div>
-                                </Row>
-                            <Row>
+                                {/* <Row>
+                                    <div  style={{paddingTop:'20px'}}>
+                                        <Col span={3} style={{width:'30px',height:'40px'}}>
+                                        <img src="/img/vegIcon.png" style={{height:'10px',width:'10px'}} />
+                                        </Col>
+                                        <Col span={10} style={{maxwidth:'130px',height:'40px',display:'flex',fontWeight:'400',fontSize:'14px'}}>
+                                        Aloo Patty Sub ( 15 cm, 6 Inch )
+                                        </Col>
+                                        <Col span={6} >
+                                                <div style={{borderStyle:'solid',borderWidth:'1px',borderColor:'#60b246',textAlign:'center'}}>
+                                                    <text style={{margin:'0px 10px',cursor:'pointer'}} onClick={e=>this.decreament()}>-</text>1
+                                                    <text style={{margin:'0px 10px',cursor:'pointer'}} onClick={e=>this.increament()}>+</text>
+                                                </div>
+                                        </Col> 
+                                        <div style={{float:'right'}}>
+                                                <Col style={{fontSize:'13px',color:'rgb(104, 107, 120)'}}>
+                                                ₹ 55
+                                                </Col>  
+                                        </div>                                     
+                                    </div>
+                                </Row> */}
+                                {this.state.viewCart.map(p=>
+                                 {return(
+                                  <RestaurantCard item={p} increament={this.increament} decreament={this.decreament}/>
+                                )})}
+                             <Row>
                                 <div style={{borderStyle:'dashed',
                                             borderWidth:'1px',textAlign:'center',
                                             marginTop:'20px',height:'50px',display:'flex',
@@ -178,7 +271,7 @@ export class CartPage extends Component {
                                     <Divider style={{height:'2px',fontWeight:'300',color:'#282c3f'}} />
                             </Row>
                             </div>
-                                <Row>
+                                <Row style={{position:'sticky',top:'0px'}}>
                                     <Col style={{float:'left',color:'#282c3f'}}>To Pay</Col>
                                     <Col style={{float:'right',color:'#282c3f',marginBottom:'10px'}}>₹ 1117</Col>
                                 </Row>
@@ -187,22 +280,6 @@ export class CartPage extends Component {
                 </div>
                 </Content>
             </div>
-
-            // <div>
-            //      <Header>
-            //         <Head />
-            //      </Header>
-            //     <div style={{minHeight:'100%',background:'#e9ecee',flexGrow:'1'}}>
-            //         <div style={{maxWidth:'1200px',minWidth:'1200px',position:'relative',display:'flex',margin:'0 auto',marginTop:'31px'}}>
-            //             <div style={{flex:'1',marginRight:'30px',position:'relative'}}>
-                       
-            //             </div>
-            //             <div style={{width:'366px',position:'sticky',top:'111px'}}>
-            //                 dfsdf
-            //             </div>
-            //         </div>
-            //     </div>
-            // </div>
         )
     }
 }
