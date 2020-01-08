@@ -9,7 +9,8 @@ import CartPage from './Components/CartPage'
 import Location from './Components/Location'
 import MobLocation from './Components/MobLocation'
 import Moboffers from'./Components/Moboffers'
-import MobCart from'./Components/MobCart'
+import MobCart from'./Components/MobCart';
+import MobAccount from'./Components/MobAccount';
 import { Card } from 'antd';
  class App extends Component {
   render() {
@@ -23,6 +24,7 @@ import { Card } from 'antd';
            <Route path='/MobLocation' component ={MobLocation}/>
            <Route path='/Moboffers' component={Moboffers}/>
            <Route path='/MobCart' component={MobCart}/>
+           <Route path='/MobAccount' component={MobAccount}/>
        
         </Switch>
       </BrowserRouter>
