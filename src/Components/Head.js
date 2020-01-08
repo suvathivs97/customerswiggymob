@@ -17,6 +17,12 @@ import {
   import {Link} from 'react-router-dom'
 import axios from 'axios';
 import port from '../port'
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from 'react-places-autocomplete';
+import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
+
 
 message.config({
   top: 150,
@@ -37,6 +43,7 @@ export class Head extends Component {
             orders:true,
             verify:false,
             submitname:'SEND OTP',
+            address:'',
             disphone:false };
 
 
@@ -162,6 +169,21 @@ componentDidMount=async()=>{
     window.location.reload()
   }
 
+  handleChange = address => {
+    this.setState({ address });
+  };
+
+handleSelect = async(address) => {
+  let addresslatlng=await geocodeByAddress(address)
+  console.log(addresslatlng[0],"address")
+  let result=await getLatLng(addresslatlng[0])
+  // console.log(result,"result")
+  await this.setState({markObj:{lat:result.lat,lng:result.lng}})
+  if(addresslatlng[0]){
+      await this.setState({address:addresslatlng[0].formatted_address})
+  }
+}
+
 
     render() {
       const menu = (
@@ -210,12 +232,53 @@ componentDidMount=async()=>{
                                 onClose={this.onClose}
                                 visible={this.state.visible}
                                 width="400px"
-                             >
+                            >
                                 <div style={{padding:'20px 0px'}}>
-                                  <Input style={{boxShadow:'1px solid #d4d5d9',
+                                  {/* <Input style={{boxShadow:'1px solid #d4d5d9',
                                                  border:'1px solid #d4d5d9',
                                                 height:'50px'}}
-                                         placeholder="Search for area,streat Name.. "></Input>
+                                         placeholder="Search for area,streat Name.. "></Input> */}
+                                         <div  className="Searchboxfff">
+                                    <PlacesAutocomplete
+                                        value={this.state.address}
+                                        onChange={this.handleChange}
+                                        onSelect={this.handleSelect}
+                                    >
+                                    {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                                        <div>
+                                        <Input
+                                            {...getInputProps({
+                                            placeholder: 'Search Places ...',
+                                            className: 'location-search-input',
+                                            })}
+                                            style={{width:'340px'}}
+                                        />
+                                        <div className="autocomplete-dropdown-container">
+                                            {loading && <div>Loading...</div>}
+                                            {suggestions.map(suggestion => {
+                                            const className = suggestion.active
+                                                ? 'suggestion-item--active'
+                                                : 'suggestion-item';
+                                            // inline style for demonstration purpose
+                                            const style = suggestion.active
+                                                ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                                                : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                                            return (
+                                                <div
+                                                {...getSuggestionItemProps(suggestion, {
+                                                    className,
+                                                    style,
+                                                })}
+                                                >
+                                                <span>{suggestion.description}</span>
+                                                </div>
+                                            );
+                                            })}
+                                        </div>
+                                        </div>
+                                    )}
+                                    </PlacesAutocomplete>
+                                </div>
                                 </div>
                                 <div style={{border:'1px solid #d4d5d9',marginBottom:'5%'}}>
                                   <div style={{fontSize:'16px',color:'#282c3f',fontWeight:'500',padding:'5px 24px',minHeight:'70px',display:'flex',alignItems:'center'}}>
@@ -495,4 +558,7 @@ const text={
   color:'#3d4152'
 }
 
-export default Head
+// export default Head
+export default GoogleApiWrapper({
+  apiKey: ("AIzaSyASz1UkWHmuSBq5Obktwpapwunp3UI3OQo")
+})(Head)

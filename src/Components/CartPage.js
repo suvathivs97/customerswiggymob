@@ -29,7 +29,8 @@ export class CartPage extends Component {
         value:'',
         viewCart:[],
         restaurant_name:'',
-        viewaddress:false
+        viewaddress:false,
+        address:[]
       };
 
       componentDidMount=async()=>{
@@ -43,6 +44,11 @@ export class CartPage extends Component {
                 if(cart[0]){
                    await this.setState({restaurant_name:cart[0].restaurant_name,restaurant_address:cart[0].restaurant_address,restaurant_image:cart[0].restaurant_image})
                 }
+            }
+            let viewAddress=await axios.post(port+`/viewAddress?customerId=${customerId}`)
+            console.log(viewAddress,"viewaddress")
+            if(viewAddress.data.address){
+                await this.setState({address:viewAddress.data.address})
             }
         }
       }
@@ -81,6 +87,7 @@ export class CartPage extends Component {
                 }
             }
         }
+        
     increament=async(item)=>{
        console.log('inside increment function',item)
        let quantity=Number(item.quantity)+1
@@ -141,6 +148,7 @@ export class CartPage extends Component {
                                     </Radio>
                                 </Radio.Group> */}
                                 <div class="row">
+                                {this.state.address.map(p=>{return(
                                 <div class="col-6 col-sm-6 col-lg-6">
                                     <Card style={{margin:'10px',height:'230px'}}> 
                                         <Col span={2} style={{width:'20px',height:'180px'}}>
@@ -148,16 +156,17 @@ export class CartPage extends Component {
                                         </Col>
                                         <Col span={25}>
                                             <div style={{fontSize:'17px',fontWeight:'500',color:'#282c3f',display:'flex',alignItems:'center'}}>
-                                            Home
+                                             {p.type}
                                             </div>
-                                            <div style={{color:'#93959f',fontSize:'13px'}}>12, sara complex, Saravanampatti, Coimbatore, Tamil Nadu 641035, India</div>
-                                            <div style={{color:'#282c3f',marginTop:'30px',fontSize:'14px'}}>29 MINS</div>
-                                            <Button style={{backgroundColor:'#60b246',marginTop:'5px',border:0,fontSize:'16px',fontWeight:'600',textAlign:'center',color:'#fff'}}>Deliver Here</Button>
+                                            <div style={{color:'#93959f',fontSize:'13px'}}>{p.address}</div>
+                                            {/* <div style={{color:'#282c3f',marginTop:'30px',fontSize:'14px'}}>29 MINS</div> */}
+                                            <Button style={{backgroundColor:'#60b246',marginTop:'30px',border:0,fontSize:'16px',fontWeight:'600',textAlign:'center',color:'#fff'}}>Deliver Here</Button>
                                         </Col>
                                         
                                     </Card>
                                 </div>
-                                <div class="col-6 col-sm-6 col-lg-6">
+                                )})}
+                                {/* <div class="col-6 col-sm-6 col-lg-6">
                                     <Card style={{margin:'10px'}}> 
                                       <Col span={2} style={{width:'20px',height:'180px'}}>
                                           <Icon type="home" />
@@ -171,10 +180,10 @@ export class CartPage extends Component {
                                             <Button style={{backgroundColor:'#60b246',marginTop:'5px',border:0,fontSize:'16px',fontWeight:'600',textAlign:'center',color:'#fff'}}>Deliver Here</Button>
                                         </Col>
                                     </Card>
-                                </div>
+                                </div> */}
                                 <div class="col-6 col-sm-6 col-lg-6">
                                   <Card style={{margin:'10px'}} onClick={this.addaddress}> 
-                                      <Col span={2} style={{width:'20px',height:'160px'}}>
+                                      <Col span={2} style={{width:'20px',height:'180px'}}>
                                           <Icon type="home" />
                                         </Col>
                                         <Col span={25}>

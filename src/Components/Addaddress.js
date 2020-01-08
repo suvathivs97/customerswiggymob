@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Drawer,Input,Col,Icon,Row,Card} from 'antd'
+import {Drawer,Input,Col,Icon,Row,Card, message} from 'antd'
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import axios from 'axios'
 import PlacesAutocomplete, {
@@ -7,14 +7,19 @@ import PlacesAutocomplete, {
     getLatLng,
   } from 'react-places-autocomplete';
 import { Button } from 'antd/lib/radio';
+import port from '../port'
 
 export class Addaddress extends Component {
     state = { visible: true, 
         placement: 'left',
         others:false,
         address:'',
-        markObj :{ lat: 11.0266,
-                   lng: 77.0212}
+        type:'',
+        markObj :{ lat: '',
+                   lng: ''},
+        homecolor:false,
+        workcolor:false,
+        othercolor:false
     }
     onClose=()=>{
         this.setState({visible:false})
@@ -64,7 +69,7 @@ export class Addaddress extends Component {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 position => {
-                     this.setState({markObj:{lat:position.coords.latitude,lng:position.coords.longitude}})
+                      this.setState({markObj:{lat:position.coords.latitude,lng:position.coords.longitude}})
                      axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${position.coords.latitude},${position.coords.longitude}&key=AIzaSyASz1UkWHmuSBq5Obktwpapwunp3UI3OQo`)
                      .then(async(res)=>{
                      if(res.data.results[0]){
@@ -86,22 +91,46 @@ export class Addaddress extends Component {
         }
     }
 
-    selectType3=async()=>{
-        console.log('selectType')
-           await this.setState({others:true})
+    selectType1=async()=>{
+           console.log('selectType')
+           await this.setState({others:false,type:'Home',homecolor:true,workcolor:false,othercolor:false})
     }
 
     selectType2=async()=>{
-        console.log('selectType')
-           await this.setState({others:false})
+           console.log('selectType')
+           await this.setState({others:false,type:'Work',workcolor:true,homecolor:false,othercolor:false})
     }
 
-    selectType1=async()=>{
-        console.log('selectType')
-           await this.setState({others:false})
+    selectType3=async()=>{
+           console.log('selectType')
+           await this.setState({others:true,othercolor:true,workcolor:false,homecolor:false})
     }
 
-    
+    submitaddress=async()=>{
+        console.log('inside submitaddress')
+        let {address,markObj,type} = this.state
+        let customerId=localStorage.getItem('id')
+        console.log(address,markObj.lat,markObj.lng,type,customerId)
+        if(address != '' || type != '' || markObj.lat != '' || markObj.lng != ''){
+            if(customerId != undefined && customerId != null){
+                let submit=await axios.post(port+'/newAddress',{customerId,latitude:markObj.lat,longitude:markObj.lng,address,type})
+                console.log('submit',submit)
+                if(submit.data.success){
+                    message.success(submit.data.message)
+                    await this.setState({visible:false})
+                    this.props.viewadd()
+                }else{
+                    message.error(submit.data.message)
+                }
+            }else{
+                console.log('cutomerId null')
+            }
+        }else{
+            alert('Enter all the field')
+        }
+
+
+    }
 
     render() {
         return (
@@ -118,9 +147,9 @@ export class Addaddress extends Component {
                               <div>
                               <div  className="Searchboxfff">
                                 <PlacesAutocomplete
-                                value={this.state.address}
-                                onChange={this.handleChange}
-                                onSelect={this.handleSelect}
+                                    value={this.state.address}
+                                    onChange={this.handleChange}
+                                    onSelect={this.handleSelect}
                                 >
                                 {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                                     <div>
@@ -190,40 +219,44 @@ export class Addaddress extends Component {
                                     </div>
                                     </div>
                                 </div>
-                                <Row style={{width:'340px',minHeight:'70px',border:'1px solid #d4d5d9',marginBottom:'5%'}}>
+                                <Row style={{width:'340px',minHeight:'70px',border:'1px solid #d4d5d9'}}>
                                      <Col span={8} style={{borderRight:'1px solid #d4d5d9',height:'70px',padding:'25px',cursor:'pointer'}} >
                                          <a onClick={this.selectType1} style={{textDecoration:'none'}}>
                                             <div style={{display:'flex',alignItems:'center'}}>
-                                            <Icon type="home" style={{marginRight:'3px'}}/> Home
+                                            <Icon type="home" style={{marginRight:'3px'}} theme={this.state.homecolor?"filled":'outlined'}/> Home
                                             </div>
                                          </a>
                                      </Col>
                                      <Col span={8} style={{borderRight:'1px solid #d4d5d9',height:'70px',padding:'25px',display:'flex',alignItems:'center',cursor:'pointer'}} >
                                           <a style={{textDecoration:'none'}} onClick={this.selectType2}>
                                             <div style={{display:'flex',alignItems:'center'}}>
-                                              <Icon type="laptop" style={{marginRight:'3px'}} />  Work
+                                              <Icon type="laptop" style={{marginRight:'3px'}} theme={this.state.workcolor?"filled":'outlined'}/>  Work
                                             </div>
                                          </a>
                                      </Col>
                                      <Col span={8} style={{padding:'25px',display:'flex',alignItems:'center',cursor:'pointer'}} >
                                           <a onClick={this.selectType3} style={{textDecoration:'none'}}>
                                             <div style={{display:'flex',alignItems:'center'}}>
-                                               <Icon type="search" /> Other
+                                               <Icon type="search" theme={this.state.othercolor?"filled":'outlined'}/> Other
                                              </div>
                                          </a>
                                      </Col>
                                 </Row>
                                 {this.state.others?
-                                <input style={{width:'340px',minHeight:'30px',border:'none',borderBottom:'1px solid #d4d5d9'}}
-                                       placeholder="Enter label">
+                                <input style={{width:'340px',minHeight:'30px',border:'none',borderBottom:'1px solid #d4d5d9',marginTop:'5%'}}
+                                       placeholder="Enter label"
+                                       value={this.state.type}
+                                       onChange={e=>this.setState({type:e.target.value})}>
                                    
                                 </input>
                                 :
                                 <div style={{display:'none'}}></div>}
-                                <div style={{width:'340px'}}>
-                                    <Button style={{padding:'10px 40px',backgroundColor:'#fc8019',display:'flex',alignItems:'center',height:'70px'}}>SAVE ADDRESS AND PROCEED</Button>
+                                
                                 </div>
-                                </div>
+                              </div>
+                              <div style={{marginTop:'5%'}}>
+                                    <Button style={{padding:'10px 40px',backgroundColor:'#fc8019',display:'flex',alignItems:'center',height:'70px',justifyContent:'center'}}
+                                            onClick={this.submitaddress}>SAVE ADDRESS AND PROCEED</Button>
                               </div>
                             </Drawer>
             </div>
