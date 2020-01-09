@@ -22,7 +22,7 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
-
+import Location from './Location'
 
 message.config({
   top: 150,
@@ -44,15 +44,40 @@ export class Head extends Component {
             verify:false,
             submitname:'SEND OTP',
             address:'',
-            disphone:false };
+            disphone:false,
+            mappedAddress:[],
+            name:'',
+            selectedPlace:'',
+            type:'Select Location',
+            markObj :{ lat: '',
+            lng: ''} };
 
 
 componentDidMount=async()=>{
   let id=localStorage.getItem('id')
+  let name=localStorage.getItem('name')
+  let type=localStorage.getItem('type')
+  let address=localStorage.getItem('address')
+  
   if(id == null && id == undefined){
     await this.setState({orders:false})
+    if(name != null && name != undefined){
+      await this.setState({name})
+    }
+    
   }else{
+    
     await this.setState({orders:true})
+    if(name != null && name != undefined){
+      await this.setState({name})
+    }
+    let viewAddress=await axios.post(port+`/viewAddress?customerId=${id}`)
+            if(viewAddress.data.address){
+                await this.setState({mappedAddress:viewAddress.data.address})
+            }
+  }
+  if(type!= undefined && type != null && address != undefined && address != null){
+    await this.setState({type,selectedPlace:address})
   }
 }
  
@@ -111,8 +136,12 @@ componentDidMount=async()=>{
       const res=await axios.post(port+'/verifyOTPLogin',{otp:this.state.otp,phoneno:this.state.phoneno})
       if(res.data.success){
         localStorage.setItem('id',res.data.customerId)
-        await this.setState({login:false,OtpLogin:false})
+        localStorage.setItem('name',res.data.name)
+        await this.setState({login:false,OtpLogin:false,name:res.data.name})
         message.success('Successfully login in')
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000);
       }else{
         message.error(res.data.message) 
       }
@@ -150,7 +179,11 @@ componentDidMount=async()=>{
             if(res.data.success){
                   message.success('Successfully signed up')
                   localStorage.setItem('id',res.data.customerId)
-                  await this.setState({signUp:false,login:false,OtpLogin:false,phoneno:'',otp:'',name:'',mail:''})
+                  localStorage.setItem('name',res.data.name)
+                  await this.setState({signUp:false,login:false,OtpLogin:false,phoneno:'',otp:'',name:'',mail:'',name:res.data.name})
+                  setTimeout(() => {
+                    window.location.reload()
+                  }, 1000);
             }else{
                   message.error(res.data.message)
             }
@@ -180,10 +213,52 @@ handleSelect = async(address) => {
   // console.log(result,"result")
   await this.setState({markObj:{lat:result.lat,lng:result.lng}})
   if(addresslatlng[0]){
-      await this.setState({address:addresslatlng[0].formatted_address})
+      await this.setState({address:addresslatlng[0].formatted_address,visible:false,viewaddress:true})
   }
 }
 
+getGeoLocation = async(e) => {
+  e.preventDefault()
+  if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+          position => {
+                this.setState({markObj:{lat:position.coords.latitude,lng:position.coords.longitude}})
+               axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${position.coords.latitude},${position.coords.longitude}&key=AIzaSyASz1UkWHmuSBq5Obktwpapwunp3UI3OQo`)
+               .then(async(res)=>{
+               if(res.data.results[0]){
+                  console.log(res.data.results[0].address_components,"position")   
+                  let address= res.data.results[0].formatted_address
+                  console.log(address,"address")
+                  await this.setState({address,visible:false,viewaddress:true})
+
+               }
+               
+              }           
+            )
+          }
+          
+      )
+     
+  } else {
+       console.log('error')
+  }
+}
+
+viewadd=async()=>{
+    await this.setState({viewaddress:false})
+}
+
+goback=async()=>{
+  await this.setState({visible:true})
+}
+
+selectAddress=async(p)=>{
+  console.log(p,'selected address ')
+  localStorage.setItem('address',p.address)
+  localStorage.setItem('type',p.type)
+  await this.setState({selectedPlace:p.address,type:p.type,visible:false,viewaddress:false})
+
+}
 
     render() {
       const menu = (
@@ -208,6 +283,7 @@ handleSelect = async(address) => {
           </Menu.Item>
         </Menu>
       );
+
         return (
             <div>
               <Layout className="layout">
@@ -220,9 +296,10 @@ handleSelect = async(address) => {
                           <div style={{display:'flex',cursor:'pointer',marginLeft:'30px',maxWidth:'300px',alignItems:'center',marginBottom:'-1px',height:'100%'}}>
                             <a style={{textDecoration:'none'}} onClick={this.showDrawer}>
                               <span style={{float:'left',color:'#3d4152',fontWeight:'700'}}>
-                                <text style={{display:'block',fontWeight:"700",color:'#3d4152',whiteSpace:'nowrap',borderBottomWidth:'2px',overflow:'hidden',minWidth:'30px',fontSize:'14px',textOverflow:'ellipsis'}}>Saravanmpatty</text>
+                                <text style={{display:'block',fontWeight:"700",color:'#3d4152',whiteSpace:'nowrap',borderBottomWidth:'2px',overflow:'hidden',minWidth:'30px',fontSize:'14px',textOverflow:'ellipsis'}}>{this.state.type}</text>
                               </span>
-                              <text style={{fontSize:'14px',marginLeft:'5px',paddingLeft:'5px',color:'#686b78',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',display:'block'}}>Coimbatore,Tamilnadu</text>
+                              <text style={{fontSize:'14px',marginLeft:'5px',paddingLeft:'5px',color:'#686b78',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',display:'block',width:'200px'}}>{this.state.selectedPlace} </text>
+                              
                               {/* <Icon type="down" style={{color:'#fc8019',fontSize:'12px',paddingLeft:'5px',fontWeight:"700"}} /> */}
                             </a>
                             <Drawer
@@ -252,6 +329,7 @@ handleSelect = async(address) => {
                                             className: 'location-search-input',
                                             })}
                                             style={{width:'340px'}}
+                                            value={this.state.address}
                                         />
                                         <div className="autocomplete-dropdown-container">
                                             {loading && <div>Loading...</div>}
@@ -280,27 +358,40 @@ handleSelect = async(address) => {
                                     </PlacesAutocomplete>
                                 </div>
                                 </div>
-                                <div style={{border:'1px solid #d4d5d9',marginBottom:'5%'}}>
-                                  <div style={{fontSize:'16px',color:'#282c3f',fontWeight:'500',padding:'5px 24px',minHeight:'70px',display:'flex',alignItems:'center'}}>
-                                   <div>
-                                       <img src="/img/current.png" style={{width:'18px',height:'18px',marginRight:'4px'}}></img>Get Current Location
-                                       <div style={{fontSize:'13px',color:'#93959f',marginTop:'5px',marginLeft:'15%'}}>Using GPS</div>
-                                   </div>
+                                <a style={{textDecoration:'none'}} onClick={this.getGeoLocation}>
+                                  <div style={{border:'1px solid #d4d5d9',marginBottom:'5%'}}>
+                                    <div style={{fontSize:'16px',color:'#282c3f',fontWeight:'500',padding:'5px 24px',minHeight:'70px',display:'flex',alignItems:'center'}}>
+                                    <div>
+                                        <img src="/img/current.png" style={{width:'18px',height:'18px',marginRight:'4px'}}></img>Get Current Location
+                                        <div style={{fontSize:'13px',color:'#93959f',marginTop:'5px',marginLeft:'15%'}}>Using GPS</div>
+                                    </div>
+                                    </div>
                                   </div>
-                                </div>
+                                </a>
                                 <div style={{border:'1px solid #d4d5d9',padding:'10px 0px',marginBottom:'5%'}}>
                                   <div style={{color:'#7e808c',fontSize:'12px',marginLeft:'56px'}}>SAVED ADDRESS</div>
-                                  <Row style={{padding:'5px 24px'}}>
-                                    <Col span={2} >
-                                      <Icon type="home" />
-                                    </Col>
-                                    <Col span={20}>
-                                      <Row style={{fontSize:'16px',color:'#282c3f',fontWeight:'500'}}>Home</Row>
-                                      <Row style={{fontSize:'13px',color:'#93959f',marginTop:'5px'}}>12, sara complex, Saravanampatti, Coimbatore, Tamil Nadu 641035, India</Row>
-                                    </Col>
-                                  </Row>
+                                  {this.state.mappedAddress.map(p=>{
+                                    return(
+                                    <a style={{textDecoration:'none'}} onClick={e=>this.selectAddress(p)} key={p._id}>
+                                      <Row style={{padding:'5px 24px'}}>
+                                        {/* <Col span={2} >
+                                          <Icon type="home" />
+                                        </Col>
+                                        <Col span={20}> */}
+                                          <Row style={{fontSize:'16px',color:'#282c3f',fontWeight:'500'}}>{p.type}</Row>
+                                          <Row style={{fontSize:'13px',color:'#93959f',marginTop:'5px'}}>{p.address}</Row>
+                                        {/* </Col> */}
+                                        <hr style={{borderStyle:'dashed',marginTop:'15px'}}/>
+                                      </Row>
+                                      
+                                    </a>
+                                  )})}
                                 </div>
                             </Drawer>
+                            {this.state.viewaddress?
+                               <Location viewadd={this.viewadd} address={this.state.address} markObj={this.state.markObj} goback={this.goback}/>
+                               :<div style={{display:'none'}}></div>
+                            }
                           </div>
                         
                         <ul style={{flex:'1',display:'flex',flexDirection:'row-reverse',alignItems:'center',height:'100%',listStyleType:'none'}}>
@@ -318,7 +409,7 @@ handleSelect = async(address) => {
                                 <Icon type="login" style={icon}/>
                                 {this.state.orders?
                                  <Dropdown overlay={menu} >
-                                   <text style={text}>Name</text>
+                                   <text style={text}>{this.state.name}</text>
                                  </Dropdown>
                                  :
                                  <text style={text}>Sign in</text>

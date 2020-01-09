@@ -91,7 +91,7 @@ export class MidRestaurant extends Component {
        }
 
        calculatetotal=()=>{
-            console.log('inside calculate total')
+            // console.log('inside calculate total')
             let sum=0
                 // let viewCart=await axios.get(port+`/viewCart?customerId=${customer_id}`)
                 let cart=this.state.viewCart
@@ -100,7 +100,7 @@ export class MidRestaurant extends Component {
                 for (let i=0;i<cart.length;i++){
                     sum=Number(sum) + Number(price[i] * quantity[i])
                 }
-             console.log(sum,"sum")
+            //  console.log(sum,"sum")
              return sum
        }
 
@@ -108,7 +108,8 @@ export class MidRestaurant extends Component {
            let customer_id=localStorage.getItem('id')
             if(customer_id != undefined && customer_id != null){
                 let viewCart=await axios.get(port+`/viewCart?customerId=${customer_id}`)
-                await this.setState({viewCart:viewCart.data.cart,length:viewCart.data.cart.length,load:true})
+                let res=await axios.get(port+`/getFoodItems?restaurantId=${this.props.id}&customerId=${customer_id}`)
+                await this.setState({viewCart:viewCart.data.cart,length:viewCart.data.cart.length,load:true,fooddata:res.data.items})
             }
 
        }
@@ -126,7 +127,7 @@ export class MidRestaurant extends Component {
                     if(res.data.success){
                         let viewCart=await axios.get(port+`/viewCart?customerId=${customerId}`)
                         let res=await axios.get(port+`/getFoodItems?restaurantId=${this.props.id}&customerId=${customerId}`)
-                        await this.setState({viewCart:viewCart.data.cart,fooddata:res.data.items})
+                        await this.setState({viewCart:viewCart.data.cart,fooddata:res.data.items,length:viewCart.data.cart.length})
                     }else{
                         message.error(res.data.message)
                     }
@@ -135,23 +136,24 @@ export class MidRestaurant extends Component {
                     if(removecart.data.success){
                         let viewCart=await axios.get(port+`/viewCart?customerId=${customerId}`)
                         let res=await axios.get(port+`/getFoodItems?restaurantId=${this.props.id}&customerId=${customerId}`)
-                        await this.setState({viewCart:viewCart.data.cart,fooddata:res.data.items})
+                        await this.setState({viewCart:viewCart.data.cart,fooddata:res.data.items,length:viewCart.data.cart.length})
                     }
         
                 }
             }
         }
     increament=async(item)=>{
-       console.log('inside increment function',item)
+    //    console.log('inside increment function',item)
        let quantity=Number(item.quantity)+1
        let customerId=localStorage.getItem('id')
        if(customerId != undefined && customerId != null){
            let res=await axios.post(port+'/updateCart',{customerId,itemId:item.item_id,quantity})
-           console.log(res,"response for updatecart")
+        //    console.log(res,"response for updatecart")
            if(res.data.success){
                 let viewCart=await axios.get(port+`/viewCart?customerId=${customerId}`)
                 let res=await axios.get(port+`/getFoodItems?restaurantId=${this.props.id}&customerId=${customerId}`)
-                await this.setState({viewCart:viewCart.data.cart,fooddata:res.data.items})
+                await this.setState({viewCart:viewCart.data.cart,fooddata:res.data.items,length:viewCart.data.cart.length})
+
            }else{
             message.error(res.data.message)
            }
@@ -167,7 +169,7 @@ export class MidRestaurant extends Component {
 
        
     render() {
-        console.log(this.state.categories,"this.state.categories")
+        // console.log(this.state.categories,"this.state.categories")
         return (
              <div style={{backgroundColor:'#fff'}}>
             <Row>
@@ -214,7 +216,7 @@ export class MidRestaurant extends Component {
                           <div></div>:
                           <div>
                              <div style={{fontSize:'32px',fontWeight:'600'}}>{p}</div>
-                             <div style={{color:'#686b78',fontSize:'13px',fontWeight:'500'}}>4 ITEM</div>
+                             <div style={{color:'#686b78',fontSize:'13px',fontWeight:'500'}}>{this.state.categories.length} ITEM</div>
                           </div>
                           }
                         {this.state.fooddata.filter(q=>q.category_name==p).map(r=>{return(

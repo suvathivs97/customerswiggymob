@@ -19,7 +19,9 @@ const customPanelStyle = {
     border: 0,
     fontSize:'16px',
     fontWeight:'600',
-    overflow: "hidden"
+    overflow: "hidden",
+    deliverAddress:'',
+    deliverType:''
   };
 
 
@@ -30,11 +32,16 @@ export class CartPage extends Component {
         viewCart:[],
         restaurant_name:'',
         viewaddress:false,
-        address:[]
+        address:[],
+        selectedLocation:''
       };
 
       componentDidMount=async()=>{
         let customerId=localStorage.getItem('id')
+        let address=localStorage.getItem('address')
+        if(address != null && address != undefined ){
+            await this.setState({selectedLocation:address})
+        }
         if(customerId != undefined && customerId != null){
             let viewCart=await axios.get(port+`/viewCart?customerId=${customerId}`)
             console.log(viewCart,"viewcart")
@@ -114,6 +121,15 @@ export class CartPage extends Component {
         this.setState({viewaddress:false})
     }
 
+    deliver=async(p)=>{
+        console.log(p,"deliver function")
+        await this.setState({deliverAddress:p.address,deliverType:p.type,openPanel:'2'})
+
+    }
+    changefirstpanel=async()=>{
+        await this.setState({openPanel:'1'})
+    }
+
     render() {
         return (
             <div >
@@ -137,16 +153,19 @@ export class CartPage extends Component {
                                        <div style={{color:'#282c3f',fontSize:'16px',fontWeight:'500',marginLeft:'3.5%'}}>Lavanya  |  9563284170</div>
                                    
                             </Panel> */}
-                            <Panel  header={<div>Delivery Address<text style={{color:'#fc8019',float:'right',padding:'5px',fontSize:'14px'}}>CHANGE</text></div>} key="1"style={customPanelStyle}>
-                                {/* <Radio.Group onChange={this.onChange} value={this.state.value} key={'1'}>
-                                    <Radio  value={'1'}>
-                                        <h3>Home<p style={{float:'right',marginLeft:'50px'}}><Icon type="delete"  style={{float:'right',paddingLeft:'30px',fontSize:'20px'}}/><Icon type="edit" style={{float:'right',fontSize:'20px'}}/></p></h3> 
-                                        <p>Lavanya | 9865324157</p>
-                                    
-                                    <p>75,saravanampatti,Coimbatore,641035</p>
-                                    
-                                    </Radio>
-                                </Radio.Group> */}
+                            <Panel
+                             showArrow={false}
+                             header={
+                                    <div>Delivery Address
+                                      <text style={{color:'#fc8019',float:'right',padding:'5px',fontSize:'14px'}} onClick={this.changefirstpanel}>CHANGE</text>
+                                      {this.state.openPanel != '1'?
+                                        <div>
+                                            <div style={{fontSize:'14px',color:'rgb(40, 44, 63)',marginTop:'10px',fontWeight:'500px'}}>{this.state.deliverType}</div>
+                                            <div style={{fontSize:'14px',color:'#93959f'}}>{this.state.deliverAddress}</div>
+                                        </div>:
+                                        <div></div>}
+                                    </div>} key="1" style={customPanelStyle}>
+                               
                                 <div class="row">
                                 {this.state.address.map(p=>{return(
                                 <div class="col-6 col-sm-6 col-lg-6">
@@ -160,7 +179,7 @@ export class CartPage extends Component {
                                             </div>
                                             <div style={{color:'#93959f',fontSize:'13px'}}>{p.address}</div>
                                             {/* <div style={{color:'#282c3f',marginTop:'30px',fontSize:'14px'}}>29 MINS</div> */}
-                                            <Button style={{backgroundColor:'#60b246',marginTop:'30px',border:0,fontSize:'16px',fontWeight:'600',textAlign:'center',color:'#fff'}}>Deliver Here</Button>
+                                            <Button style={{backgroundColor:'#60b246',marginTop:'30px',border:0,fontSize:'16px',fontWeight:'600',textAlign:'center',color:'#fff'}} onClick={e=>this.deliver(p)}>Deliver Here</Button>
                                         </Col>
                                         
                                     </Card>
@@ -190,7 +209,7 @@ export class CartPage extends Component {
                                             <div style={{fontSize:'17px',fontWeight:'500',color:'#282c3f',display:'flex',alignItems:'center'}}>
                                              Add New Address
                                             </div>
-                                            <div style={{color:'#93959f',fontSize:'13px'}}>12, sara complex, Saravanampatti, Coimbatore, Tamil Nadu 641035, India</div>
+                                            <div style={{color:'#93959f',fontSize:'13px'}}>{this.state.selectedLocation}</div>
                                             <Button style={{borderColor:'#60b246',marginTop:'5px',fontSize:'12px',fontWeight:'600',textAlign:'center',color:'#60b246',marginTop:'30px'}}>ADD NEW</Button>
                                         </Col>
                                    </Card>
@@ -207,8 +226,8 @@ export class CartPage extends Component {
                                       ADD NEW ADDRESS
                                 </Button> */}
                             </Panel>
-                            <Panel  header="Payment" key="2"style={customPanelStyle}>
-                            <p>sdfsdf</p>
+                            <Panel showArrow={false} header="Payment" key="2"style={customPanelStyle}>
+                            <p></p>
                             </Panel>
                         </Collapse>
                     </Col>

@@ -136,7 +136,7 @@ export class Addaddress extends Component {
         return (
             <div>
                             <Drawer
-                                title={<Icon type="close" onClick={this.closeDrawer} />}
+                                title={<Icon type="close" onClick={this.onClose} />}
                                 placement={this.state.placement}
                                 closable={false}
                                 onClose={this.onClose}

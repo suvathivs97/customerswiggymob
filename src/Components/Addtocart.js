@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import {Divider} from 'antd'
+import {Divider,message} from 'antd'
 import axios from 'axios'
 import port from '../port'
-
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 export class Addtocart extends Component {
     state={
         addQuant:false,
@@ -28,15 +29,65 @@ export class Addtocart extends Component {
     addtocart=async(p)=>{
         console.log('addtocart',p)
         let id=localStorage.getItem('id')
+        let check=0
         // console.log(id,"customerid")
         if(id != undefined && id!= null)
         {
-            const addtocart=await axios.post(port+'/addToCart',{customerId:id,itemId:p.item_id,restaurantId:p.restaurant_id,quantity:1})
-            console.log(addtocart,"addtocart response")
-            if(addtocart.data.success){
-                await this.setState({addQuant:true})
-                this.props.refreshcart()
+            let viewCart=await axios.get(port+`/viewCart?customerId=${id}`)
+            let cart=viewCart.data.cart
+            let restaurant=cart.map(p=>p.restaurant_id)
+            for(let i=0;i<restaurant.length;i++){
+                    if(p.restaurant_id == restaurant[i]){
+                        check=0
+                    }else{
+                        check=i+1
+                    }
             }
+            console.log(check,'check')
+            if(check == 0){
+                console.log('addtocart')
+                const addtocart=await axios.post(port+'/addToCart',{customerId:id,itemId:p.item_id,restaurantId:p.restaurant_id,quantity:1})
+                console.log(addtocart,"addtocart response")
+                if(addtocart.data.success){
+                    await this.setState({addQuant:true})
+                    this.props.refreshcart()
+                }else{
+                    message.error(addtocart.data.message)
+                }
+            }else{
+                
+                console.log('deletecart')
+                confirmAlert({
+                    title: 'Item already in cart',
+                    message: 'Your cart contains items from other restaurant. Would you like to reset your cart for adding items from this restaurant?',
+                    buttons: [
+                      {
+                        label: 'Yes',
+                        onClick: async() => 
+                        {
+                            const removecart=await axios.post(port+'/clearCart',{customerId:id})
+                            console.log(removecart,"removecart")
+                            if(removecart.data.success){
+                                const addtocart=await axios.post(port+'/addToCart',{customerId:id,itemId:p.item_id,restaurantId:p.restaurant_id,quantity:1})
+                                console.log(addtocart,"addtocart response")
+                                if(addtocart.data.success){
+                                    await this.setState({addQuant:true})
+                                    this.props.refreshcart()
+                                }else{
+                                    message.error(addtocart.data.message)
+                                }
+                            }
+                        }
+                      },
+                      {
+                        label: 'No',
+                        onClick: () => console.log('said no')
+                      }
+                    ]
+                  });
+                
+            }
+
         }else{
             alert('Please Login')
         }
@@ -58,14 +109,15 @@ export class Addtocart extends Component {
                           <div style={{paddingTop:'20px'}}>
                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; {this.props.item.name}</div>
                                <div style={{float:'right'}}>
-                                   {this.state.addQuant == false ?
+                                   {this.state.addQuant == false || this.props.item.quantity == 0 ?
                                    <button style={{backgroundColor:'#fff',borderWidth:'1px',height:'30px',width:'70px',color:'#60b246',fontSize:'14px',textAlign:'center'}} onClick={e=>this.addtocart(this.props.item)}>
                                                        ADD
                                    </button>
                                    :
                                    <div style={{borderStyle:'solid',borderWidth:'1px',borderColor:'#60b246',textAlign:'center'}}>
                                        <text style={{margin:'0px 15px',cursor:'pointer'}} onClick={e=>this.decreament(this.props.item)}>-</text>
-                                            {this.props.item.quantity == 0 ?this.state.quantity:this.props.item.quantity}
+                                            {/* {this.props.item.quantity == 0 ?this.state.quantity:this.props.item.quantity} */}
+                                            {this.props.item.quantity}
                                        <text style={{margin:'0px 15px',cursor:'pointer'}} onClick={e=>this.increament(this.props.item)}>+</text></div>
                                    }
                                </div>
