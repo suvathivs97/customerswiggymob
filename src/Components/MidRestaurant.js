@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
-import {Col,Row,Icon,Divider, Button, message} from 'antd'
+import {Col,Row,Icon,Divider, Button, message,Switch} from 'antd'
 import Scrollspy from 'react-scrollspy'
 import axios from 'axios'
 import port from '../port'
 import Addtocart from './Addtocart';
 import { relativeTimeThreshold } from 'moment';
 import RestaurantCard from './RestaurantCard';
+import{NavLink}from'react-router-dom'
+
+function onChange(checked) {
+    console.log(`switch to ${checked}`);
+  }
 export class MidRestaurant extends Component {
     state={
         categories:[],
@@ -52,7 +57,7 @@ export class MidRestaurant extends Component {
             res=await axios.get(port+`/getFoodItems?restaurantId=${this.props.id}`)
             await this.setState({fooddata:res.data.items})
         }
-      
+      console.log("fooddata",res.data.items);
         let food=[]
 
         for(let i=0;i<this.state.fooddata.length;i++){
@@ -171,7 +176,9 @@ export class MidRestaurant extends Component {
     render() {
         // console.log(this.state.categories,"this.state.categories")
         return (
-             <div style={{backgroundColor:'#fff'}}>
+
+            <div>
+             <div className="webview"style={{backgroundColor:'#fff'}}>
             <Row>
                 <Col span={6} style={{padding:'40px 0px',position:'sticky',top:'50px'}}>
                     <div style={{display:'flex',float:'right'}}>
@@ -259,6 +266,204 @@ export class MidRestaurant extends Component {
                  }
                 </Col>
             </Row>
+         </div>
+         <div className="mobview">
+                <div style={{backgroundColor:'#eee',paddingTop:'12px'}}>
+                </div>
+                <div style={{padding:'0 20px',height:'72px',alignItems:'center',display:'flex',position:'relative',justifyContent: 'space-between'}}>
+                    <div syle={{display: 'flex', alignItems: 'center',height: '14px',overflow: 'hidden',contain: 'content',transform: 'translateZ(0)'}}>
+                        <Row>
+                         <Col span={12}>
+                        <div style={{ display:'flex',flexWrap:'nowrap',whiteSpace:'nowrap',textTransform: 'uppercase', fontSize: '12px', color: '#535665',fontWeight: '700',marginTop:'5px'}}>VEG ONLY </div>
+                        </Col>
+                        <Col span={12}>
+                        <div style={{marginLeft: '16px',}}>
+                        <Switch size="small" onChange={onChange}/>
+
+                            {/* <div style={{background:' #cdcfd9', width: '24px', height: '6px', position: 'relative',transition:'background-color .25s linear', willChange: 'background-color',transform: 'translateZ(0)',contain: 'layout'}}>
+                                <div style={{position: 'absolute', left: 0,  top: '50%',  width: '14px',  height: '14px', transform: 'translate3d(0,-50%,0)', background: '#fff',border: '1px solid #cdcfd9',transition: 'all .25s linear',backfaceVisibility: 'hidden', willChange: 'transform,border-color',contain:'strict'}}>
+                                    <div style={{transition: 'opacity .25s linear', willChange: 'opacity'}}>
+                                        <img src='/img/vegIcon.png'/>
+                                    </div>
+                                </div>
+                            </div> */}
+                        </div>
+                        </Col>
+                        </Row>
+                    </div>
+                </div>
+                <div style={{padding:'0 20px'}}><hr/></div>
+                {/*recommended  */}
+                <div style={{padding:'10px 16px 20px 20px', color: '#535665',position: 'relative',fontSize:'12px',paddingTop:'10px',textAlign:'center',paddingBottom:'20x'}}>
+                <div style={{fontSize:'15px',color: '#3d4152',fontWeight: '800',float:'left'}}>Recommended</div> 
+                 <div style={{paddingTop:'40px'}}>
+                    <Row gutter={10}>
+                        <Col span={12}>
+                        <div style={{paddingTop:'10px'}}>
+                         <img src="img/food1.jpg" style={{width:'100%',height:'90px'}}/>
+                            <div style={{paddingTop:'10px'}} >
+                                {/* <div style={{display:'flex',flex:1,float:'left',fontSize:'15px',}}>
+                                             <img src="/img/vegIcon.png" style={{height:'10px',margin:'5px 5px 10px 0'}}/>
+                                                 Puri
+                                </div> 
+                                <div style={{marginTop:'20px',fontSize:'12px',float:'left'}}>Starter </div>   */}
+                                <Row>
+                                 
+                                    <Col span={1}>
+                                        <div style={{display:'flex',flex:1,float:'left',fontSize:'15px',}}>
+                                             <img src="/img/vegIcon.png" style={{height:'10px',margin:'5px 5px 10px 0'}}/>
+                                                 Pasta
+                                         </div>   
+                                     </Col>
+                                        <Col span={1}>
+                                            <div style={{marginTop:'20px',fontSize:'12px',padding:'10 0',marginRight:'10px'}}>Starter </div>
+                                        </Col>
+                                        
+                                            <div style={{marginTop:'40px',fontSize:'12px',float:'left'}}>₹105 </div> 
+                                            <div  style={{float:'right'}}>
+                                            <div style={{height: '28px', width: '72px', border: '1px solid #d4d5d9', backgroundColor: '#fff', contain: 'content', overflow: 'hidden',position: 'relative',marginTop:'40px'}}>
+                                                         <div style={{fontSize:'12px', fontWeight: '600', color: '#60b246', textAlign: 'center', lineHeight: '26px'}}>ADD</div>
+                                                    </div></div>
+                                                
+                                       
+                                        </Row>
+                                        {/* <Col span={8}>
+                                             <div style={{width: '82px',minHeight: '24px',marginLeft: '12px',position: 'relative',float:'right'}}>
+                                                <div style={{position:'absolute',paddingBottom:'0'}}>
+                                                    <div style={{height: '28px', width: '72px', border: '1px solid #d4d5d9', backgroundColor: '#fff', contain: 'content', overflow: 'hidden',position: 'relative'}}>
+                                                         <div style={{fontSize:'15px', fontWeight: '600', color: '#60b246', textAlign: 'center', lineHeight: '26px'}}>ADD</div>
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                        </Col> */}
+                                
+                             </div>
+                            </div>
+                        </Col>
+                        <Col span={12}>
+                        <div style={{paddingTop:'20px'}}>
+                            <img src='img/food7.jpg' style={{width:'100%',height:'90px'}}/>
+                            <Row>
+                                 
+                                 <Col span={1}>
+                                     <div style={{display:'flex',flex:1,float:'left',fontSize:'15px',whiteSpace:'nowrap'}}>
+                                          <img src="/img/vegIcon.png" style={{height:'10px',margin:'5px 5px 10px 0'}}/>
+                                              Chicken Rice
+                                      </div>   
+                                  </Col>
+                                     <Col span={1}>
+                                         <div style={{marginTop:'20px',fontSize:'12px',padding:'10 0',marginRight:'10px',display:'flex',whiteSpace:'nowrap'}}>Main Course</div>
+                                     </Col>
+                                     
+                                         <div style={{marginTop:'40px',fontSize:'12px',float:'left'}}>₹95 </div> 
+                                         <div  style={{float:'right'}}>
+                                         <div style={{height: '28px', width: '72px', border: '1px solid #d4d5d9', backgroundColor: '#fff', contain: 'content', overflow: 'hidden',position: 'relative',marginTop:'40px'}}>
+                                                      <div style={{fontSize:'12px', fontWeight: '600', color: '#60b246', textAlign: 'center', lineHeight: '26px'}}>ADD</div>
+                                                 </div></div>
+                                             
+                                    
+                                     </Row>
+                            </div>
+                        </Col>
+                    </Row>
+                              {/* new 2 column */}
+                    <Row gutter={10}>
+                        <Col span={12}>
+                        <div style={{paddingTop:'30px'}}>
+                         <img src="img/food5.jpg" style={{width:'100%',height:'90px'}}/>
+                            <div style={{paddingTop:'10px'}} >
+                                <Row>
+                                 
+                                    <Col span={1}>
+                                        <div style={{display:'flex',flex:1,float:'left',fontSize:'15px',}}>
+                                             <img src="/img/vegIcon.png" style={{height:'10px',margin:'5px 5px 10px 0'}}/>
+                                                 Biriyani
+                                         </div>   
+                                     </Col>
+                                        <Col span={1}>
+                                            <div style={{marginTop:'20px',fontSize:'12px',padding:'20 0',marginRight:'10px',whiteSpace:'nowrap'}}>Main Course </div>
+                                        </Col>
+                                        
+                                            <div style={{marginTop:'40px',fontSize:'12px',float:'left'}}>₹75 </div> 
+                                            <div  style={{float:'right'}}>
+                                            <div style={{height: '28px', width: '72px', border: '1px solid #d4d5d9', backgroundColor: '#fff', contain: 'content', overflow: 'hidden',position: 'relative',marginTop:'40px'}}>
+                                                         <div style={{fontSize:'12px', fontWeight: '600', color: '#60b246', textAlign: 'center', lineHeight: '26px'}}>ADD</div>
+                                            </div>
+                                            </div>      
+                                        </Row>
+                                        </div>
+                                        </div>
+                                  </Col>
+                        <Col span={12}>
+                        <div style={{paddingTop:'30px'}}>
+                            <img src='img/food6.jpg' style={{width:'100%',height:'90px'}}/>
+                            <Row>
+                                 
+                                 <Col span={1}>
+                                     <div style={{display:'flex',flex:1,float:'left',fontSize:'15px',marginTop:'10px'}}>
+                                          <img src="/img/vegIcon.png" style={{height:'10px',margin:'5px 5px 10px 0'}}/>
+                                              Roast
+                                      </div>   
+                                  </Col>
+                                     <Col span={1}>
+                                         <div style={{marginTop:'10px',fontSize:'12px',paddingTop:'20px',marginRight:'10px',whiteSpace:'nowrap'}}>Main Course</div>
+                                     </Col>
+                                     
+                                         <div style={{marginTop:'50px',fontSize:'12px',float:'left'}}>₹30 </div> 
+                                         <div  style={{float:'right'}}>
+                                         <div style={{height: '28px', width: '72px', border: '1px solid #d4d5d9', backgroundColor: '#fff', contain: 'content', overflow: 'hidden',position: 'relative',marginTop:'50px'}}>
+                                                      <div style={{fontSize:'12px', fontWeight: '600', color: '#60b246', textAlign: 'center', lineHeight: '26px'}}>ADD</div>
+                                                 </div></div>
+                                             
+                                    
+                                     </Row>
+                            </div>
+                        </Col>
+                    </Row>
+                                        
+                    </div>
+                </div>
+
+                      {/*  New Breakfast        */}
+                {this.state.categories.map(p=>{return(
+                <div style={{padding:'10px 16px 20px 20px', color: '#535665',position: 'relative',fontSize:'12px',paddingTop:'10px',textAlign:'center',paddingBottom:'30x'}}>
+                 <div style={{fontSize:'15px',color: '#3d4152',fontWeight: '800',float:'left'}}>{p}</div>
+                 {this.state.fooddata.filter(q=>q.category_name==p).map(r=>{return(
+                  <div>
+                     <Addtocart p={p} item={r} refreshcart={this.refreshcart} increament={this.increament} decreament={this.decreament}/>
+                  </div>
+               
+                 )})}
+                 </div>
+                )})}
+                <div>
+                    < div style={{bottom:'0',left:0,position:'fixed',width:'100%',}}>
+                        <div style={{height: '46px',overflow: 'hidden',zIndex: '3',fontSize: '13px',color:'#fff',background: '#60b246',alignItems: 'center',position:'relative',padding: '0 16px'}}>
+                            <div styl={{height: '100%',display: 'flex',}}>
+                                <Row>
+                                    <Col span={12}>
+                                        <div style={{fontSize:'14px',fontWeight:'bold',marginTop:'8px'}}>{this.state.viewCart?this.state.viewCart.length:'' } Item
+                                        <span style={{margin:'0 8px'}}>|</span>₹79</div>
+                                        <div style={{ fontWeight: 300,fontSize:'9px'}}>From :Madrasi Biriyani</div>
+                                    </Col>
+                                    <Col span={12}>
+                                        <div style={{float:'right',marginTop:'15px',fontWeight:'bold'}}>
+                                            <a onClick={this.checkout}>VIEW CART</a>
+                                        <img src="/img/bag2.png" style={{height:'20px',marginBottom:'10px'}}/></div>
+                                    </Col>
+                                </Row>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                 <footer>
+                     <div style={{padding: '30px 16px 160px', alignItems: 'center', color: '#a9abb2',display: 'flex',backgroundColor: '#f7f8fd'}}>
+                         <img  height="25" src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,h_50/fssai_final_edss9i"></img>
+                     <div style={{marginLeft:'12px',fontSize:'12px',marginTop:'4px'}}>License No:123456hju789</div>
+                     </div>
+                 </footer>
+            </div>
          </div>
      )
  }

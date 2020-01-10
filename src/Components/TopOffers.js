@@ -33,7 +33,8 @@ export class TopOffers extends Component {
       }
     render() {
         return (
-                <div style={{flex:'1',backgroundColor: '#171a29',paddingTop:'15px'}}>
+            <div>
+                <div className="webview"style={{flex:'1',backgroundColor: '#171a29',paddingTop:'15px'}}>
                     <div style={{maxWidth: '1200px',minWidth: '1200px',position: 'relative',margin:'auto',height: '310px',display: 'flex',alignItems: 'center',contain: 'layout'}}>
                        <button className="prev" onClick={this.scroll.bind(null, -1)}
                                style={{width:'47px',height:'47px',backgroundColor:'#fff',boxShadow:'0 1px 3px 0 rgba(41,48,63,.25)',borderRadius:'100%',cursor:'pointer'}}>
@@ -58,6 +59,23 @@ export class TopOffers extends Component {
                         </button>
                     </div>
                 </div>
+                <div className="mobview">
+                    <div style={{display:'flex',flexWrap:'nowrap',overflowX:'auto', margin:'0px 20px',paddingBottom:'20px'}}>
+                        <div style={{flex:'0 0 auto',margin:'20px 20px 0 0',borderRadius:'3px'}}>
+                          <img  src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_384/rng/md/carousel/production/l5wuzsxut9miz7up3ixg" height="150px"  width="150px"></img>
+                        </div>
+                        <div style={{flex:'0 0 auto',margin:'20px 20px 0 0'}}>
+                          <img  src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_384/rng/md/carousel/production/s5og8mayfjfwusrkeals" height="150px"  width="150px"></img>
+                        </div>
+                        <div style={{flex:'0 0 auto',margin:'20px 20px 0 0'}}>
+                          <img  src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_384/rng/md/carousel/production/lkzkqbcelgrqd9cxay3t" height="150px"  width="150px"></img>
+                        </div>
+                        <div style={{flex:'0 0 auto',margin:'20px 20px 0 0'}}>
+                          <img  src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_384/rng/md/carousel/production/lkzkqbcelgrqd9cxay3t" height="150px"  width="150px"></img>
+                        </div>
+                     </div>
+                </div>
+                </div> 
         )
     }
 }

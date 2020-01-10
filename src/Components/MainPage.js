@@ -12,6 +12,7 @@ export class MainPage extends Component {
     render() {
         return (
             <div>
+              <div className="webview">
                 <Layout style={{ height: "auto" }}>
                         <Header>
                           <Head />
@@ -34,6 +35,15 @@ export class MainPage extends Component {
                           <Bottom />
                         </Footer>
                 </Layout>
+                </div>
+                <div className="mobview">
+               <Head></Head>
+               <TopOffers/>
+               <TwoOfffers/>
+               <MidContent />   
+               <Bottom/>
+              
+                </div>
             </div>
         )
     }

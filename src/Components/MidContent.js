@@ -4,7 +4,7 @@ import Scrollspy from 'react-scrollspy'
 import AllRestaurants from './AllRestaurants'
 import axios from 'axios'
 import port from '../port'
-import { Link } from "react-router-dom";
+import { Link,NavLink } from "react-router-dom";
 
 export class MidContent extends Component {
     state={
@@ -78,7 +78,8 @@ export class MidContent extends Component {
         return (
             // <Row>
             <div>
-            <div style={{marginTop:'30px'}}>
+          <div className="webview">
+            <div  style={{marginTop:'30px'}}>
                 <div style={{padding:'0 20px'}}>
                     <div style={{position:'relative',maxWidth:'1200px',minWidth:'1200px',margin:'0 auto'}}> 
                         <div style={{display:'flex'}}>
@@ -296,6 +297,211 @@ export class MidContent extends Component {
             <div id="filter_15">
                <AllRestaurants />
             </div>
+            </div>
+            <div className="mobview">
+           
+                                            
+                {/* popular brands */}
+                    <div style={{color: '#3d4152', marginLeft: '20px', marginTop: '30px', fontSize: '15px', fontWeight: '600',display: 'block'}}> Popular Brands
+                    </div>
+                    <div style={{width: 'auto', overflowX: 'scroll', overflowY: 'hidden', display:'flex',flexWrap:'nowrap', margin:'10px 20px',paddingBottom:'20px',color:'#282C3F'}}>
+                        <div style={{flex:'0 0 auto',marginRight:'30px'}}>
+                        <img height="80" width="80" src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_160,e_trim/rpkifa9fipyyc4avyfpj"/>
+                        <div style={{maxWidth:'80px',wordBreak:'break-word',whiteSpace:'pre-line',fontWeight:'600',fontSize:'11px',paddingTop:'10px',textAlign:'center',textTransform:'uppercase'}}>Domino's Pizza</div>
+                        </div>
+                        <div style={{flex:'0 0 auto',marginRight:'30px'}}>
+                        <img   height="80" width="80" src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_160,e_trim/qhzzefsu4ntxri7mttq1"/>
+                        
+                        <div style={{maxWidth:'80px',wordBreak:'break-word',whiteSpace:'pre-line',fontWeight:'600',fontSize:'11px',paddingTop:'10px',textAlign:'center',textTransform:'uppercase'}}>Burger King</div>
+                        </div>
+                        <div style={{flex:'0 0 auto',marginRight:'30px'}}>
+                        <img   height="80" width="80" src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_160,e_trim/u6vzlpphieceu3r47hha"></img>
+                        
+                        <div style={{maxWidth:'80px',wordBreak:'break-word',whiteSpace:'pre-line',fontWeight:'600',fontSize:'11px',paddingTop:'10px',textAlign:'center',textTransform:'uppercase'}}>Sree Anandhas</div>
+                        </div>
+                        <div style={{flex:'0 0 auto',marginRight:'30px'}}>
+                        <img  height="80" width="80" src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_160,e_trim/hs6qtfwctqnbejkhsczs"></img>
+                        <div style={{maxWidth:'80px',wordBreak:'break-word',whiteSpace:'pre-line',fontWeight:'600',fontSize:'11px',paddingTop:'10px',textAlign:'center',textTransform:'uppercase'}}>Anna Proona</div>
+                        </div>
+                        <div style={{flex:'0 0 auto',marginRight:'30px'}}>
+                        <img  height="80" width="80" src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_160,e_trim/vfx3dby2ermkjh1ms5e5"/>
+                        <div style={{maxWidth:'80px',wordBreak:'break-word',whiteSpace:'pre-line',fontWeight:'600',fontSize:'11px',paddingTop:'10px',textAlign:'center',textTransform:'uppercase'}}>cafe coffee day</div>
+                        </div>
+                        <div style={{flex:'0 0 auto',marginRight:'30px'}}>
+                        <img  height="80" width="80" src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_160,e_trim/rng/md/carousel/production/lbn5xz4fmbcjzcsypypp"/>
+                        <div style={{maxWidth:'80px',wordBreak:'break-word',whiteSpace:'pre-line',fontWeight:'600',fontSize:'11px',paddingTop:'10px',textAlign:'center',textTransform:'uppercase'}}>BreakFast Express</div>
+                        </div>
+                        <div style={{flex:'0 0 auto',marginRight:'30px'}}>
+                        <img  height="80" width="80" src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_160,e_trim/wojsi3n5lu9lw37hfsyv"></img>
+                        <div style={{maxWidth:'80px',wordBreak:'break-word',whiteSpace:'pre-line',fontWeight:'600',fontSize:'11px',paddingTop:'10px',textAlign:'center',textTransform:'uppercase'}}>Keventers</div>
+                        </div>
+                        <div style={{flex:'0 0 auto',marginRight:'30px'}}>
+                        <img  height="80" width="80" src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_160,e_trim/i6fdzjojx8cdbgb87qez"/>
+                        <div style={{maxWidth:'80px',wordBreak:'break-word',whiteSpace:'pre-line',fontWeight:'600',fontSize:'11px',paddingTop:'10px',textAlign:'center',textTransform:'uppercase'}}>Geetha Canteen</div>
+                        </div>
+ 
+                   
+                    </div>
+                    <div style={{margin:' 20px',background: '#282c3f', height: '2px',display: 'block'}}><hr/></div>
+                                                                 {/* only on swiggy */}
+                                            <div style={{color: '#3d4152', marginLeft: '20px', marginTop: '30px', fontSize: '15px', fontWeight: '600',display: 'block'}}> Only on Swiggy
+                                            </div>
+                                            <div style={{width: 'auto', overflowX: 'scroll', overflowY: 'hidden', display:'flex',flexWrap:'nowrap', margin:'10px 20px',paddingBottom:'20px',color:'#282C3F'}}>
+                                            <div style={{paddingLeft:'20px',paddingTop:'20px'}}>
+                                                    <Col span={6}>
+                                                        <div style={{position: 'absolute', top: 0,  left: 0, right: 0, bottom: 0,backgroundColor: 'rgba(40,44,63,.05)',backgroundBlendMode: 'overlay'}}>
+                                                        <div style={{background: 'rgb(58, 60, 65)',color: 'rgb(255, 255, 255)',borderColor: 'rgb(30, 32, 35) transparent'}}>
+                                                           <img src="/img/food7.jpg" style={{width:'100%',height:'70px'}}/>
+                        
+                                                        </div>
+                                                        </div>
+                                                    </Col>
+                                                    <div style={{whiteSpace:"nowrap",marginLeft:'40px'}}>
+                                                        <div style={{paddingLeft:'20px',
+                                                        fontSize:'12px',color:'#3d4152',fontWeight:'600'}}>
+                                                        Tandoori Tonight
+                                                        </div>
+                                                        <div style={{paddingLeft:'20px',flex: 1, color: '#7e808c',  width: '100%', fontSize: '12px'}}>
+                                                           Indian,Chinese
+                                                        </div>
+                                                        <div style={{display:'flex',flexWrap:'nowrap'}}>
+                                                        <img src="/img/percentage.png" style={{paddingLeft:'20px'}}/>
+                                                        <div style={{fontWeight: 500,paddingLeft: '4px',color: '#7e808c', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',fontSize: '12px'}}> 
+                                                        60% off 
+                                                        </div>
+                                                        </div>
+                                                        <div style={{paddingLeft:'20px'}}>
+                                                        <hr/>
+                                                        </div>
+                                                           <div style={{ paddingLeft:'20px',color: '#7e808c', fontSize:'12px', display: 'flex',width: '100%'}}>  
+                                                            <img src='/img/star.png'style={{height:'9px',marginTop:'2px'}}/>
+                                                            <div style={{paddingLeft:'4px',fontSize:'10px'}}>4.1</div>
+                                                            
+                                                                <img style={{paddingLeft:'2px',height:'13px',marginTop:'2px'}}
+                                                                src="/img/dot.png"/>
+                                                                <div style={{paddingLeft:'2px',fontSize:'11px'}}>32MINS</div>    
+                                                            </div> 
+                                                          </div>
+                                                    </div>
+                                                            {/* new */}
+                                                    <div style={{paddingLeft:'20px',paddingTop:'20px'}}>
+                                                    <Col span={6}>
+                                                        <div style={{position: 'absolute', top: 0,  left: 0, right: 0, bottom: 0,backgroundColor: 'rgba(40,44,63,.05)',backgroundBlendMode: 'overlay'}}>
+                                                        <div style={{background: 'rgb(58, 60, 65)',color: 'rgb(255, 255, 255)',borderColor: 'rgb(30, 32, 35) transparent'}}>
+                                                           <img src="/img/sweet1.jpg" style={{width:'100%',height:'70px'}}/>
+                        
+                                                        </div>
+                                                        </div>
+                                                    </Col>
+                                                    <div style={{whiteSpace:"nowrap",marginLeft:'50px'}}>
+                                                        <div style={{paddingLeft:'30px', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',
+                                                        fontSize:'12px',color:'#3d4152',fontWeight:'600'}}>
+                                                        Agarwal Sweet Palace
+                                                        </div>
+                                                        <div style={{paddingLeft:'30px',flex: 1, color: '#7e808c',  width: '100%', fontSize: '12px'}}>
+                                                        Fast Food
+                                                        </div>
+                                                        
+                                                        <div style={{paddingLeft:'30px'}}>
+                                                        <hr/>
+                                                        </div>
+                                                           <div style={{ paddingLeft:'30px',color: '#7e808c', fontSize:'12px', display: 'flex',width: '100%'}}>  
+                                                            <img src='/img/star.png'style={{height:'9px',marginTop:'2px'}}/>
+                                                            <div style={{paddingLeft:'4px',fontSize:'10px'}}>4.1</div>
+                                                            
+                                                                <img style={{paddingLeft:'2px',height:'13px',marginTop:'2px'}}
+                                                                src="/img/dot.png"/>
+                                                                <div style={{paddingLeft:'2px',fontSize:'11px'}}>32MINS</div>    
+                                                            </div>     
+                                                    </div>
+                                                    </div>
+                                                             {/* new */}
+                                                    <div style={{paddingLeft:'20px',paddingTop:'20px'}}>
+                                                    <Col span={6}>
+                                                        <div style={{position: 'absolute', top: 0,  left: 0, right: 0, bottom: 0,backgroundColor: 'rgba(40,44,63,.05)',backgroundBlendMode: 'overlay'}}>
+                                                        <div style={{background: 'rgb(58, 60, 65)',color: 'rgb(255, 255, 255)',borderColor: 'rgb(30, 32, 35) transparent'}}>
+                                                           <img src="/img/food9.jpg" style={{width:'100%',height:'70px'}}/>
+                        
+                                                        </div>
+                                                        </div>
+                                                    </Col>
+                                                    <div style={{whiteSpace:"nowrap",marginLeft:'40px'}}>
+                                                        <div style={{paddingLeft:'30px', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',
+                                                        fontSize:'12px',color:'#3d4152',fontWeight:'600'}}>
+                                                        LFC
+                                                        </div>
+                                                        <div style={{paddingLeft:'30px',flex: 1, color: '#7e808c',  width: '100%', fontSize: '12px',textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap'}}>
+                                                        Fast Food
+                                                        </div>
+                                                         <div style={{display:'flex',flexWrap:'nowrap'}}>
+                                                        <img src="/img/percentage.png" style={{paddingLeft:'30px'}}/>
+                                                        <div style={{fontWeight: 500,paddingLeft: '4px',color: '#7e808c', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',fontSize: '12px'}}> 
+                                                        60% off 
+                                                        </div>
+                                                        </div>
+                                                        <div style={{paddingLeft:'30px'}}>
+                                                        <hr/>
+                                                        </div>
+                                                           <div style={{ paddingLeft:'30px',color: '#7e808c', fontSize:'12px', display: 'flex',width: '100%'}}>  
+                                                            <img src='/img/star.png'style={{height:'9px',marginTop:'2px'}}/>
+                                                            <div style={{paddingLeft:'4px',fontSize:'10px'}}>4.1</div>
+                                                            
+                                                                <img style={{paddingLeft:'2px',height:'13px',marginTop:'2px'}}
+                                                                src="/img/dot.png"/>
+                                                                <div style={{paddingLeft:'2px',fontSize:'11px'}}>32MINS</div>
+                                                               
+                                                                
+                                                            </div> 
+                                                        
+                                                        
+                                                    </div>
+                                                    </div>
+                                                   
+                                                     {/* new */}
+                                                     <div style={{paddingLeft:'20px',paddingTop:'20px'}}>
+                                                    <Col span={6}>
+                                                        <div style={{position: 'absolute', top: 0,  left: 0, right: 0, bottom: 0,backgroundColor: 'rgba(40,44,63,.05)',backgroundBlendMode: 'overlay'}}>
+                                                        <div style={{background: 'rgb(58, 60, 65)',color: 'rgb(255, 255, 255)',borderColor: 'rgb(30, 32, 35) transparent'}}>
+                                                           <img src="/img/food10.jpg" style={{width:'100%',height:'70px'}}/>
+                        
+                                                        </div>
+                                                        </div>
+                                                    </Col>
+                                                    <div style={{whiteSpace:"nowrap",marginLeft:'40px'}}>
+                                                        <div style={{paddingLeft:'30px', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',
+                                                        fontSize:'12px',color:'#3d4152',fontWeight:'600'}}>
+                                                        Hang Out
+                                                        </div>
+                                                        <div style={{paddingLeft:'30px',flex: 1, color: '#7e808c',  width: '100%', fontSize: '12px',maxWidth:'100px',textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap'}}>
+                                                        Arabian,Chinese,Indian,Berverage,South Indian
+                                                        </div>
+                                                         <div style={{display:'flex',flexWrap:'nowrap'}}>
+                                                        <img src="/img/percentage.png" style={{paddingLeft:'30px'}}/>
+                                                        <div style={{fontWeight: 500,paddingLeft: '4px',color: '#7e808c', fontSize: '12px'}}> 
+                                                        60% off 
+                                                        </div>
+                                                        </div>
+                                                        <div style={{paddingLeft:'30px'}}>
+                                                        <hr/>
+                                                        </div>
+                                                           <div style={{ paddingLeft:'30px',color: '#7e808c', fontSize:'12px', display: 'flex',width: '100%'}}>  
+                                                            <img src='/img/star.png'style={{height:'9px',marginTop:'2px'}}/>
+                                                            <div style={{paddingLeft:'4px',fontSize:'10px'}}>4.1</div>
+                                                            
+                                                                <img style={{paddingLeft:'2px',height:'13px',marginTop:'2px'}}
+                                                                src="/img/dot.png"/>
+                                                                <div style={{paddingLeft:'2px',fontSize:'11px'}}>32MINS</div>    
+                                                            </div> 
+                                                    </div>
+                                                    </div>
+                                            </div>
+                                            {/* line */}
+                                            <div style={{margin:' 20px',background: '#282c3f', height: '2px',display: 'block'}}><hr/></div>
+                                           <div>
+                                            <AllRestaurants />
+                                            </div>
+                                             
+                  </div>
             </div>
 
         )

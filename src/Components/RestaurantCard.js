@@ -4,6 +4,7 @@ export class RestaurantCard extends Component {
     render() {
         return (
             <div>
+                <div className="webview">
                    <Row>
                                     <div  style={{paddingTop:'20px'}}>
                                         <Col span={3} style={{width:'30px',height:'40px'}}>
@@ -25,6 +26,40 @@ export class RestaurantCard extends Component {
                                         </div>                                
                                     </div>
                     </Row>
+                    </div>
+                    <div className="mobview">
+                    <Row style={{marginBottom:"10px"}}>
+                               <Col span={8}>
+                            <div style={{display:'flex',flexwrap:'nowrap',whiteSpace:'nowrap',fontSize:'15px'}}>
+                                 <img src="/img/vegIcon.png" style={{height:'10px',margin:'5px 5px 10px 0'}}/>
+                                 {this.props.item.item_name}
+                                </div> </Col>
+                                <Col span={8}>
+                               <div style={{cursor: 'pointer',width: '82px',height: '26px', background: '#fff',border: '1px solid #e9e9eb',marginLeft: '30px',fontSize: '.86rem',color: '#7e808c',position: 'relative', contain: 'content'  }} >
+                               <Row>
+                                   <Col span={8}>
+                                       <div style={{cursor: 'pointer', position: 'absolute',left: 0, width: '27.33333px', height: '100%',  textAlign: 'center',color: '#60b246'}}>
+                                         <text onClick={e=>this.props.decreament(this.props.item)}>  -</text>
+                                       </div>
+                                   </Col>
+                                   <Col span={8}>
+                                       <div style={{cursor: 'pointer', position: 'absolute',left: 0, width: '27.33333px', height: '100%',  textAlign: 'center',color: '#60b246'}}>
+                                       {this.props.item.quantity}
+                                       </div>
+                                   </Col>
+                                   <Col span={8}>
+                                       <div style={{cursor: 'pointer', position: 'absolute',left: 0, width: '27.33333px', height: '100%',  textAlign: 'center',color: '#60b246'}}>
+                                        <text onClick={e=>this.props.increament(this.props.item)}>   + </text>
+                                       </div>
+                                   </Col>
+                               </Row>
+                                </div>
+                                </Col>
+                                <Col span={8}>
+                                  <div style={{fontSize:'12px',paddingleft:'30px',float:'right'}}>  ₹ {Number(this.props.item.price) * Number(this.props.item.quantity)}</div>
+                                </Col>
+                                </Row>
+                    </div>
                                     
             </div>
         )

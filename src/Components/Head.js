@@ -286,6 +286,7 @@ selectAddress=async(p)=>{
 
         return (
             <div>
+              <div className='webview'>
               <Layout className="layout">
                 <Header className="heading">
                     <Row>
@@ -618,6 +619,29 @@ selectAddress=async(p)=>{
                     </Menu> */}
                 </Header>
               </Layout>
+            </div>
+            <div className='mobview'>
+              
+              
+              <header  style={{
+                padding:'10px 0 0 10px',alignItems: 'center', borderBottom: '1px solid #e9e9eb'
+              }}>
+                <Row>
+              <Col span={12}>
+                <a href="/MobLocation" style={{fontSize:'12px',
+                fontWeight: "600",color:'black',textDecoration:'none'}}>Others</a>
+                  <div style={{fontSize:'10px'}}>Coimbatore,Tamilnadu</div>
+                </Col>
+                
+                <Col span={12}>
+                <a href='/Moboffers' style={{fontSize:'12px',paddingRight:'10px',color:'black',textDecoration:'none',float:'right'}}>
+                  <img style={{height:'25px'}} src='/img/service.png'/> Offers</a>
+                  </Col>
+                  </Row>
+               
+              </header>
+            
+          </div>
             </div>
         )
     }

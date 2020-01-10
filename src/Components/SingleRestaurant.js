@@ -5,6 +5,7 @@ import {Layout,Col,Row,Icon} from 'antd'
 import MidRestaurant from './MidRestaurant'
 import axios from 'axios'
 import port from '../port'
+import {Card} from'antd'
 const { Header,Footer,Content } = Layout;
 
 export class SingleRestaurant extends Component {
@@ -19,7 +20,9 @@ export class SingleRestaurant extends Component {
             image:''
         };
       }
-
+back=()=>{
+    window.location.href="/"
+}
       componentDidMount=async()=>{
         //   console.log(this.match.params,"this.match.params")
          let id=localStorage.getItem('id')
@@ -40,6 +43,7 @@ export class SingleRestaurant extends Component {
     render() {
         return (
             <div>
+                 <div className='webview'>
             <Layout>
               <Header>
                  <Head />
@@ -96,6 +100,57 @@ export class SingleRestaurant extends Component {
                   <Bottom />
               </Footer>
             </Layout>
+            </div>
+            <div className='mobview'>
+            <header className="heading">
+            <div style={{padding:'10px',width:'100%',zIndex:'2px',background: '#fff'}}>
+                 <img src="/img/left arrow.png" onClick={this.back} style={{height:"20px",float:'left'}}/>
+                 <img src='/img/search.png' style={{height:"20px",float:'right'}}/>
+                 <div style={{fontWeight:"bold",textAlign:'center'}}>{this.state.restaurant} </div> 
+                   
+             </div>
+             </header>
+             <div style={{padding:'10px 16px 20px', color: '#535665',position: 'relative',fontSize:'12px',paddingTop:'10px',textAlign:'center',paddingBottom:'30x'}}>Indian,Chineese</div>
+             <div style={{ padding:'10px 16px  20px', color: '#535665', paddingBottom:'0'}}>
+                 <div style={{backgroundImage: 'linear-gradient(90deg,#a9abb2 25%,rgba(255,255,255,0) 0)',backgroundSize: '4px 1px',backgroundPosition: 'top',
+             paddingTop: '16px', backgroundRepeat: 'repeat-x',}}></div>
+
+
+             <div style={{ paddingBottom:'30px',color: '#7e808c', fontSize:'12px', display: 'flex',width: '100%'}}>  
+             <div>
+                <Row>  
+                    <Col span={5}>
+             <img src='img/star.png'style={{paddingLeft:'20px',height:'10px'}}/>
+             </Col>
+             <Col span={5}>
+             <div style={{ paddingLeft:'20px',fontSize:'15px',fontWeight:'600'}}>4.1</div> 
+              </Col>
+             </Row>
+             <div style={{paddingLeft:'10px',fontSize:'12px',fontWeight:'200'}}>5000+ rating</div>
+             </div>
+
+             <div>
+            <div style={{paddingLeft:'40px',fontSize:'15px',fontWeight:'600'}}>39mins</div>
+            <div style={{paddingLeft:'30px',fontSize:'12px',fontWeight:'200'}}>Delivery Time</div>
+            </div>
+ 
+              <div>
+             <div style={{paddingLeft:'60px',fontSize:'15px',fontWeight:'600',whiteSpace: 'nowrap',textTransform:'uppercase',textAlign:'center'}}>₹300 </div>
+             <div style={{paddingLeft:'60px',fontSize:'12px',fontWeight:'200'}}>For Two</div>
+            </div> 
+            </div>
+            <div style={{paddingBottom:'20px'}}>
+            <Card >
+                <div style={{color: '#7e808c',textAlign:'center',fontFamily: 'icomoon',fontWeight:'600'}}>
+                <img src="/img/percentage.png" style={{float:"left"}}/>
+                60% off up to ₹120 on orders above ₹99| Use coupon WELCOME60
+                </div>
+            </Card>
+            </div>
+             </div>
+             <MidRestaurant id={this.match.params.id}/>
+
+                </div>
             </div>
         )
     }

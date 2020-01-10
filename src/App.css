@@ -12,7 +12,7 @@ Header.heading{
   top: 0;
   left: 0;
   right: 0;
-  height: 80px;
+  height: 30px;
   background: #fff;
   z-index: 1000;
   will-change: transform;
@@ -65,3 +65,75 @@ Header.heading{
     transform: rotate(360deg);
   }
 }
+/*mobile*/
+@media screen and (max-width: 768px) {
+  .webview {
+  display: none;
+  }
+  Header.heading{
+    background-color: 'white';
+    align-items: center;
+    height: '70px';
+    padding-left: 16px;
+    
+  }
+  .mobfooter{
+    display: flex;
+    position:fixed;
+    width: 100%;
+    background-color: #fff;
+    height: 50px;
+    z-index: inherit 160;;
+    align-items: center;
+    padding-top: 1px;
+    transform: translateZ(0);
+    box-shadow: 0 -1px 1px 0 rgba(0,0,0,.1);
+    bottom: 0;
+    left:0;
+  }
+  Header.heading{
+    position:sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background-color: #fff; 
+    padding-bottom: 20px;
+  }
+
+  .no-outline:focus {
+    outline: none;
+    }
+    input::placeholder {
+      font-size: 12px;
+    }
+    .mobcard{
+      position:sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background-color: #fff; 
+    }
+  .sticky {
+    position:sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background-color: #fff;
+    padding-top: 13px;
+    border-bottom: 1px solid #e9e9eb;
+   
+  }
+  
+  }
+
+  /*website*/
+@media screen and (min-width: 1024px) {
+  .mobview {
+  display: none;
+  }
+  
+  
+  }

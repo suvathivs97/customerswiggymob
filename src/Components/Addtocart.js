@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Divider,message} from 'antd'
+import {Divider,message,Row,Col} from 'antd'
 import axios from 'axios'
 import port from '../port'
 import { confirmAlert } from 'react-confirm-alert';
@@ -105,7 +105,7 @@ export class Addtocart extends Component {
     render() {
         return (
             <div>
-                <div>
+                <div className="webview">
                           <div style={{paddingTop:'20px'}}>
                                <div style={{float:'left',fontSize:'15px',display:'flex',alignItems:'center'}}><img src="/img/vegIcon.png" style={{height:'15px',width:'15px'}} />&nbsp; {this.props.item.name}</div>
                                <div style={{float:'right'}}>
@@ -132,6 +132,47 @@ export class Addtocart extends Component {
                              {this.props.p == 'Recommended'?
                               <div></div>:
                              <Divider />}  
+                </div>
+                <div className="mobview">
+                <div style={{paddingTop:'10px'}}>
+                     <div style={{paddingTop:'20px'}}>
+                         <Row>
+                             <Col span={12}>
+                             <Col span={1}>
+                         <div style={{display:'flex',flex:1,float:'left',fontSize:'15px',whiteSpace:'nowrap'}}>
+                         <img src="/img/vegIcon.png" style={{height:'10px',margin:'5px 5px 10px 0'}}/>
+                         {this.props.item.name}
+                          </div>
+                          </Col>
+                          <Col span={1}>
+                          <div style={{marginTop:'20px',fontSize:'12px'}}>₹35 </div>
+                          </Col>
+                          </Col>
+                          <Col span={12}>
+                          {this.state.addQuant == false || this.props.item.quantity == 0 ?
+                          <a style={{textDecoration:'none'}}  onClick={e=>this.addtocart(this.props.item)}>
+                          <div style={{width: '82px',minHeight: '24px',marginLeft: '12px',position: 'relative',float:'right'}}>
+                            <div style={{position:'absolute',paddingBottom:'0'}}>
+                                <div style={{height: '28px', width: '72px', border: '1px solid #d4d5d9', backgroundColor: '#fff', contain: 'content', overflow: 'hidden',position: 'relative'}}>
+                                    <div style={{fontSize:'15px', fontWeight: '600', color: '#60b246', textAlign: 'center', lineHeight: '26px'}}>ADD</div>
+                                </div>
+                            </div>
+                           </div>
+                           </a>
+                            :
+                            <div style={{width: '82px',height: '26px',marginLeft:'50px',borderStyle:'solid',borderWidth:'1px',borderColor:'#60b246',textAlign:'center'}}>
+                                <text style={{margin:"0 10px",cursor:'pointer'}} onClick={e=>this.decreament(this.props.item)}>-</text>
+                                    {/* {this.props.item.quantity == 0 ?this.state.quantity:this.props.item.quantity} */}
+                                    {this.props.item.quantity}
+                                <text style={{margin:"0 10px",cursor:'pointer'}} onClick={e=>this.increament(this.props.item)}>+</text>
+                            </div>
+                     }
+                     </Col>
+                     </Row>
+                     
+                     </div>
+
+                 </div>
                 </div>
             </div>
         )
